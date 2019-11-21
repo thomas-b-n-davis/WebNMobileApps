@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2019 at 12:44 PM
+-- Generation Time: Nov 21, 2019 at 06:53 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 7.0.13
 
@@ -70,6 +70,7 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
   `price` int(11) NOT NULL,
   `description` text NOT NULL,
@@ -100,35 +101,40 @@ CREATE TABLE `users` (
 -- Indexes for table `images`
 --
 ALTER TABLE `images`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`,`date`);
 
 --
 -- Indexes for table `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `product_id` (`product_id`,`sender_id`,`receiver_id`,`timestamp`);
 
 --
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `product_id` (`product_id`,`user_id`,`timestamp`,`status`);
 
 --
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `user_id` (`user_id`,`price`,`date_uploaded`,`status`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `name` (`name`,`email`,`status`);
 
 --
 -- AUTO_INCREMENT for dumped tables
