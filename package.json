@@ -1,0 +1,26 @@
+{
+  "name": "Learning",
+  "version": "1.0.0",
+  "main": "myfirstmodule.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "angular": "^1.7.8",
+    "async": "^3.1.0",
+    "bootstrap": "^4.3.1",
+    "cookie-parser": "^1.4.4",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6-alpha.6",
+    "hashmap": "^2.4.0",
+    "morgan": "^1.9.1",
+    "mysql": "^2.17.1",
+    "mysql2": "^2.0.0",
+    "sequelize": "^5.21.1"
+  }
+}
