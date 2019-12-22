@@ -14,9 +14,7 @@ app.use('/', index);
 var publicDir = require('path').join(__dirname,'/public');
 app.use(express.static(publicDir));
 
-app.use(function(req, res, next) {
-	res.render('index.ejs') 
-});
+
 
 app.listen(config.port, function() {
 		console.log(`app is listening at http://localhost:${config.port}`);
