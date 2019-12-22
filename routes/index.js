@@ -37,4 +37,7 @@ router.get('/product/getAll', controllers.Product.getAllProducts);
 router.post('/message/getAllCommunications', controllers.Message.getAllCommunications);
 router.post('/message/getAllMessages', controllers.Message.getAllMessages);
 router.post('/message/send', controllers.Message.send);
+
+router.post('/orders/getAllOrders', controllers.Order.getAllOrders);
+router.post('/orders/addOrder', controllers.Order.addOrder);
 module.exports = router;
