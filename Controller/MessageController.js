@@ -1,24 +1,65 @@
-var sequelize = require('../common/mysql');
+services = require("../Services/service_index");
 
-module.exports.getAllMessages = function (reciever_id, sender_id, callback) {
-  var statement = "SELECT users.matrikel_number,users.first_name,users.last_name,chat.message\
-     FROM sell_it.chat,sell_it.users\
-      where chat.sender_id="+ reciever_id + " and chat.receiver_id=" + sender_id + " and chat.sender_id=users.matrikel_number \
-        or chat.sender_id="+ sender_id + " and chat.receiver_id=" + reciever_id + " and chat.sender_id=users.matrikel_number";
-  sequelize.query(statement).spread((data) => {
-    callback(data);
-  });
+exports.getAllCommunications = (req, res, next) => {
+  var user_id = req.body.user_id;
+  services.Message.getAllCommunicationsQuery(user_id, (rows) => {
+    if (!rows || !rows.length) {
+      res.json({
+        "status": "failed",
+        "user": null
+      })
+    } else {
+      res.json({
+        rows
+      })
+    }
+  })
+}
+
+exports.getAllMessages = (req, res, next) => {
+  console.log(req.body);
+  var data = req.body;
+
+
+  services.Message.getAllMessagesQuery(data.receiver_id, data.sender_id, (rows) => {
+    if (!rows || !rows.length) {
+		  res.json({
+			"status": "failed",
+			"user": null
+		  })
+		} else {
+		  res.json({
+			rows
+		  })
+		}
+	  })
 
 }
-  
-module.exports.getAllCommunications = function(matrikel_number,callback){
-  var statement = "SELECT users.matrikel_number,users.first_name,users.last_name\
-  FROM sell_it.chat,sell_it.users \
-  where chat.sender_id=users.matrikel_number and chat.receiver_id="+matrikel_number+" \
-  or chat.sender_id="+matrikel_number+" and chat.receiver_id=users.matrikel_number \
-  GROUP BY users.matrikel_number;";
-      sequelize.query(statement).spread((data) => {
-          callback(data);
-      });
+
+
+exports.send = (req, res, next) => {
+
+  var data = req.body;
+  // console.log(data.message);
+  var message = {
+    message: data.message,
+    product_id: data.product_id,
+    sender_id: data.sender_id,
+    receiver_id: data.receiver_id,
+    timestamp: data.timestamp
+  }
+  console.log(message);
+  services.Message.sendMessageQuery(message, (rows) => {
+    if (!rows) {
+      res.json({
+        "status": "failed",
+        "message": null
+      })
+    } else {
+      res.json({
+        "status": "sucessfull"
+      })
+    }
+  })
 
 }

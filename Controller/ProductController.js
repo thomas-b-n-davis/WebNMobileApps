@@ -1,60 +1,73 @@
-var Product = require('../model/ProductModel');
-var Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-var Image=require("../model/ImageModel")
+services = require("../Services/service_index");
 
-module.exports.getAllProducts = function (callback) {
-	Product.findAll({
-		include: {model: Image, as:"image"}
-	  })
-	  .then(function (related) {
-		//console.log(related[0].role.role);
-		callback(related);
-	  })
-	  .catch(function (err) {
-		//console.log(err);
-		callback(err);
-	  });
-  }
-  
-  module.exports.getAllProductsByName = function (product_name, callback) {
-	Product.findAll({
-	  where: {
-		name: {
-		  [Op.substring]: product_name
+exports.getAllProducts  = (req, res, next) =>{
+	services.Product.getAllProductsQuery((rows) => {
+		if (!rows || !rows.length) {
+		  res.json({
+			"status": "failed",
+			"user": null
+		  })
+		} else {
+		  res.json({
+			rows
+		  })
 		}
-	  }
-	})
-	  .then(function (related) {
-		//console.log(related[0].role.role);
-		callback(related);
 	  })
-	  .catch(function (err) {
-		//console.log(err);
-		callback(err);
-	  });
   }
-  module.exports.getProductById = function (product_id, callback) {
-	Product.findByPk(product_id)
-	  .then(function (related) {
-		//console.log(related[0].role.role);
-		callback(related);
+  
+exports.getProductByName = (req, res, next) =>{
+	var name=req.body.name;
+	services.Product.getAllProductsByNameQuery(name,(rows) => {
+		if (!rows || !rows.length) {
+		  res.json({
+			"status": "failed",
+			"user": null
+		  })
+		} else {
+		  res.json({
+			rows
+		  })
+		}
 	  })
-	  .catch(function (err) {
-		//console.log(err);
-		callback(err);
-	  });
+  }
+
+  exports.getProductById = (req, res, next) =>{
+	var id=req.body.id;
+	services.Product.getProductByIdQuery(id,(rows) => {
+		if (!rows || !rows.length) {
+		  res.json({
+			"status": "failed",
+			"user": null
+		  })
+		} else {
+		  res.json({
+			rows
+		  })
+		}
+	  })
   }
   
   
-  module.exports.addProduct = function (product, callback) {
-  
-	Product.build(product).save().then((data) => {
-	  console.log(data.dataValues);
-	  callback(data.dataValues);
-	}).catch((err) => {
-	  callback(err);
-	})
-  }
-  
-  
+exports.addProduct  = (req, res, next) =>{
+	var data=req.body;
+	services.Product.addProductQuery(
+	  {
+	  name : data.name,
+	  price : data.price,
+	  description : data.description,
+	  date_uploaded : data.date_uploaded,
+	  status : data.status,
+	  seller_id : data.seller_id
+  }, (callback) => {
+	if (callback.status=="failed") {
+	  res.json({
+		"status": "failed",
+		"user": null
+	  })
+	} else {
+	  res.json({
+		callback
+	  })
+	}
+  })
+	};

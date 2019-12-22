@@ -2,10 +2,14 @@ var express = require('express');
 var path = require('path');
 var config = require('./config');
 var upload=require("express-fileupload");
-
+const bodyParser = require("body-parser");
+var cookieParser = require('cookie-parser');
 var index = require('./routes/index');
 
 var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser())
 app.use(upload());
 // view engine setup
 app.set('views', path.join(__dirname, 'public'));

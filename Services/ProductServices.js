@@ -1,10 +1,10 @@
-var Product = require('../model/ProductModel');
+var models = require("../Model/model_index");
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 var Image=require("../model/ImageModel")
 
 module.exports.getAllProductsQuery = function (callback) {
-	Product.findAll({
+	models.Product.findAll({
 		include: {model: Image, as:"image"}
 	  })
 	  .then(function (related) {
@@ -18,7 +18,7 @@ module.exports.getAllProductsQuery = function (callback) {
   }
   
   module.exports.getAllProductsByNameQuery = function (product_name, callback) {
-	Product.findAll({
+	models.Product.findAll({
 	  where: {
 		name: {
 		  [Op.substring]: product_name
@@ -35,7 +35,11 @@ module.exports.getAllProductsQuery = function (callback) {
 	  });
   }
   module.exports.getProductByIdQuery = function (product_id, callback) {
-	Product.findByPk(product_id)
+	models.Product.findAll({
+		where: {
+		  id:product_id
+		}
+	  })
 	  .then(function (related) {
 		//console.log(related[0].role.role);
 		callback(related);
@@ -49,7 +53,7 @@ module.exports.getAllProductsQuery = function (callback) {
   
   module.exports.addProductQuery = function (product, callback) {
   
-	Product.build(product).save().then((data) => {
+	models.Product.build(product).save().then((data) => {
 	  console.log(data.dataValues);
 	  callback(data.dataValues);
 	}).catch((err) => {
