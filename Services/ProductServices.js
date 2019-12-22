@@ -62,3 +62,18 @@ module.exports.getAllProductsQuery = function (callback) {
   }
   
   
+  module.exports.updateProductStatusQuery = function (id,status,callback) {
+	models.Product.update({
+	  status: status
+	},{
+	  where: {
+		id: id
+	  }
+	})
+	  .then(function (related) {
+		callback(related);
+	  })
+	  .catch(function (err) {
+		callback(err);
+	  });
+  }

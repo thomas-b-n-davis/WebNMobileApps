@@ -71,3 +71,29 @@ exports.addProduct  = (req, res, next) =>{
 	}
   })
 	};
+
+
+	
+	exports.changeProductStatus  = (req, res, next) =>{
+	var id = req.body.id;
+	var status = req.body.status;
+	services.Product.updateProductStatusQuery(id, status, (rows) => {
+	  if (!rows) {
+		res.json({
+		  "status": "failed",
+		  "user": null
+		})
+	  } else {
+		console.log(rows)
+  
+		res.json({
+		  product: {
+			"product_id": id,
+			"status": "Successful"
+		  }
+		});
+  
+	  }
+	});
+  }
+  
