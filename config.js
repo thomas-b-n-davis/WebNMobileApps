@@ -1,5 +1,5 @@
 var config = {
-	port: 8080,
+	port: 28090,
 	mysql: {
 		host: '127.0.0.1',
     	user: 'root',
