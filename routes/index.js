@@ -7,7 +7,12 @@ const path = require('path');
 
 
 router.get('/',function(req,res){
-  res.render('index');
+	let loggedIn=false;
+	if(req.session.isLoggedIn==true)
+		loggedIn=true;
+
+	
+  	res.render('index',{loggedIn:loggedIn});
 });
 
 router.get('/contact',function(req,res){

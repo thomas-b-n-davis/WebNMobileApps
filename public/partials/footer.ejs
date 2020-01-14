@@ -39,6 +39,21 @@
   <script src="js/mail-script.js"></script>
   <!-- custom js -->
   <script src="js/custom.js"></script>
+  <script>
+    $(document).ready(function(){
+      if(localStorage.getItem("isLoggedIn")==null){alert("");
+        $(".Account").html('<a class="" href="/login" id="navbarDropdown3">
+                            login
+                          </a> / <a class="" href="/register" id="navbarDropdown3">
+                            Sign Up
+                          </a>');
+      }else{
+        $(".Account").html('<a class="" href="/logout" id="navbarDropdown3">
+                            Logout
+                          </a>);
+      }
+    });
+  </script>
 </body>
 
 </html>

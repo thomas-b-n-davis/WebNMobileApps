@@ -61,10 +61,19 @@
                               </li>
                           </ul>
                       </div>
-                      <div class="hearer_icon d-flex">
-                          <a class="" href="#" id="navbarDropdown3">
-                            Logout
-                          </a>
+                      <div class="hearer_icon d-flex Account">
+                          <% if (loggedIn == true) { %>
+                            <a class="" href="#" id="navbarDropdown3">
+                              Logout
+                            </a>
+                          <% } else { %>
+                            <a class="" href="/register" id="navbarDropdown3">
+                              Register
+                            </a> &nbsp&nbsp&nbsp 
+                            <a class="" href="/login" id="navbarDropdown3">
+                              Login
+                            </a>
+                          <% } %>
                       </div>
                   </nav>
               </div>

@@ -4,9 +4,16 @@ var config = require('./config');
 var upload=require("express-fileupload");
 const bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
+let session=require('express-session');
 var index = require('./routes/index');
 
 var app = express();
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
