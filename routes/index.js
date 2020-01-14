@@ -11,7 +11,6 @@ router.get('/',function(req,res){
 	if(req.session.isLoggedIn==true)
 		loggedIn=true;
 
-	
   	res.render('index',{loggedIn:loggedIn});
 });
 
