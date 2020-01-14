@@ -2,7 +2,6 @@ services = require("../Services/service_index");
 
 exports.createUser  = (req, res, next) =>{
   var data=req.body;
-  console.log(data);
   services.User.createUserQuery(
     {
     name : data.name,
