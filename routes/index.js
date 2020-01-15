@@ -12,7 +12,6 @@ var controllers = require("../Controller/controller_index");
 //   dest: './uploads/' // this saves your file into a directory called "uploads"
 // }); 
 
-
 router.get('/',function(req,res){
 	
   	res.render('index');
