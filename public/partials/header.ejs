@@ -61,20 +61,21 @@
                               </li>
                           </ul>
                       </div>
-                      <div class="hearer_icon d-flex Account">
-                          <% if (loggedIn == true) { %>
-                            <a class="" href="#" id="navbarDropdown3">
-                              Logout
-                            </a>
-                          <% } else { %>
-                            <a class="" href="/register" id="navbarDropdown3">
-                              Register
-                            </a> &nbsp&nbsp&nbsp 
-                            <a class="" href="/login" id="navbarDropdown3">
-                              Login
-                            </a>
-                          <% } %>
+                      <div class="Account">
+                            
                       </div>
+                      <div class="dropdown useAccount" style="display:none">
+                        <a class="dropdown-toggle username" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="/profile">Profile</a>
+                          <a class="dropdown-item" href="/selling">Sell An Item</a>
+                          <a class="dropdown-item" href="/buying">Transactions</a>
+                          <a class="dropdown-item" onclick="logoutFunction();">Logout</a>
+                        </div>
+                      </div>
+
                   </nav>
               </div>
           </div>

@@ -24,14 +24,14 @@ var Product = sequelize.define('products', {
     type: Sequelize.STRING(20),
     allowNull: false
   },
-  seller_id: {
+  user_id: {
     type: Sequelize.BIGINT(11),
     allowNull: false
   }
   ,
   status: {
     type: Sequelize.BIGINT(11),
-    allowNull: false
+    allowNull: true
   }
   ,
   date_uploaded: {

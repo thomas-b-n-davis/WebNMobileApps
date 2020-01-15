@@ -49,11 +49,37 @@ module.exports.getAllProductsQuery = function (callback) {
 		callback(err);
 	  });
   }
+
+  module.exports.getProductByUserIdQuery = function (user_id, callback) {
+	models.Product.findAll({
+		where: {
+		  user_id:user_id
+		}
+	  })
+	  .then(function (related) {
+		//console.log(related[0].role.role);
+		callback(related);
+	  })
+	  .catch(function (err) {
+		//console.log(err);
+		callback(err);
+	  });
+  }
   
   
   module.exports.addProductQuery = function (product, callback) {
   
 	models.Product.build(product).save().then((data) => {
+	  console.log(data.dataValues);
+	  callback(data.dataValues);
+	}).catch((err) => {
+	  callback(err);
+	})
+  }
+
+  module.exports.addImageQuery = function (image, callback) {
+  
+	models.Image.build(image).save().then((data) => {
 	  console.log(data.dataValues);
 	  callback(data.dataValues);
 	}).catch((err) => {

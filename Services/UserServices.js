@@ -5,12 +5,25 @@ var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 exports.createUserQuery = function (user, callback) {
-  models.User.build(user).save().then((data) => {
-	  console.log(data.dataValues);
-	  callback(data.dataValues);
-	}).catch((err) => {
-	  callback({status:"failed"});
-	})
+  console.log(user);
+  models.User.findAll({
+    where: {
+      email: user.email ,
+    }
+  }).then(function (result) {
+    if(result.length===0){
+        models.User.build(user).save().then((data) => {
+          console.log(data.dataValues);
+          callback(data.dataValues);
+        }).catch((err) => {
+          callback({status:"failed",message:"Sorry we are unable to create your account at this time "});
+        })
+    }else{
+        callback({status:"failed",message:"User is already in use"});
+    }
+  }).catch(function (err) {
+    callback({status:"failed",message:"Sorry we are unable to create your account at this time "});
+  }); 
 }
 
 module.exports.getAllUserQuery = function (callback) {

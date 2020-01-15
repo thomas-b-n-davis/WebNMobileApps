@@ -1,0 +1,110 @@
+<% include ./partials/header %>
+  
+  <!--================Home Banner Area =================-->
+  <!-- breadcrumb start-->
+  <section class="breadcrumb breadcrumb_bg">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-lg-12">
+                  <div class="breadcrumb_iner">
+                      <div class="breadcrumb_iner_item">
+                          <p>Home / Login</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!-- breadcrumb start-->
+
+  <!-- ================ contact section start ================= -->
+  <section class="contact-section padding_top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+        <h2 class="contact-title">Register New Account</h2>
+          <div class="response"></div>
+          <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm"
+            novalidate="novalidate">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <input class="form-control" name="name" id="name" type="email" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Enter Full Name'" placeholder='Enter Full Name'>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <input class="form-control" name="email" id="email" type="email" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Enter email address'" placeholder='Enter email address'>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <input class="form-control" name="tel" id="tel" type="email" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Enter telephone'" placeholder='Telephone'>
+                </div>
+              </div>
+              <div class="col-8">
+                <div class="form-group">
+                  <input class="form-control" name="subject" id="password" type="password" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Enter Subject'" placeholder='Password'>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <button onclick="userLogin()" class="btn_3 button-contactForm">Login</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <div class="media contact-info">
+            <div class="media-body">
+              <h3>Returning customer </h3>
+              <p>This is for users who already have an account, if you do not have account yet kindly click on the link below to register an account</p>
+            </div>
+          </div>
+          <div class="media contact-info">
+            <div class="media-body">
+              <a href="/register" class="btn_3 button-contactForm">Register</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ================ contact section end ================= -->
+
+  <!--::subscribe_area part end::-->
+<% include ./partials/footer %>
+<script>
+  function userLogin(){
+    var settings = {
+      "url": "http://localhost:28090/user/add",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "data": {
+        "name": $("#name").val(),
+        "email": $("#email").val(),
+        "telephone": $("#tel").val(),
+        "password": $("#password").val(),
+        "status": "0"
+      }
+    };      
+
+    $.ajax(settings).done(function (response) {
+      console.log(response.status);
+      if(response.status=="failed"){
+        $(".response").html(response.message);
+        $(".response").css("color","#ff0000");
+      }else{
+        localStorage.setItem("user", JSON.stringify(response.callback));
+        localStorage.setItem("isLoggedIn", "true");
+        window.location="/";
+      }
+    });
+  }
+</script>

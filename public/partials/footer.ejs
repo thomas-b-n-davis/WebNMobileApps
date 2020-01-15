@@ -41,18 +41,26 @@
   <script src="js/custom.js"></script>
   <script>
     $(document).ready(function(){
-      if(localStorage.getItem("isLoggedIn")==null){alert("");
-        $(".Account").html('<a class="" href="/login" id="navbarDropdown3">
-                            login
-                          </a> / <a class="" href="/register" id="navbarDropdown3">
-                            Sign Up
-                          </a>');
+      if(localStorage.getItem("isLoggedIn")===null){
+        $(".Account").html("<a class=\"\" href=\"/login\">Login</a>&nbsp;&nbsp;<a class=\"\" href=\"/register\">Register</a>");
       }else{
-        $(".Account").html('<a class="" href="/logout" id="navbarDropdown3">
-                            Logout
-                          </a>);
+        if(localStorage.getItem("isLoggedIn")=="true"){
+          var user=JSON.parse(localStorage.getItem("user"));
+        
+          $(".useAccount").css("display","block");
+          $(".Account").css("display","none");
+          $(".username").html(user.name);
+        }else{
+          $(".Account").html("<a class=\"\" href=\"/login\">Login</a>&nbsp;&nbsp;<a class=\"\" href=\"/register\">Register</a>");
+        }
       }
     });
+
+    function logoutFunction(){
+      localStorage.removeItem("user");
+      localStorage.setItem("isLoggedIn", "false");
+      window.location="/";
+    }
   </script>
 </body>
 

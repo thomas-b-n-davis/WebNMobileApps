@@ -13,9 +13,12 @@ exports.createUser  = (req, res, next) =>{
   if (callback.status=="failed") {
     res.json({
       "status": "failed",
-      "user": null
+      "user": null,
+      "message":callback.message
     })
   } else {
+    req.session.user=callback;
+    req.session.isLoggedIn=true;
     res.json({
       callback
     })
@@ -50,7 +53,7 @@ exports.createUser  = (req, res, next) =>{
         })
       } else {
         res.json({
-          rows
+          callback:rows[0]
         })
       }
     })
