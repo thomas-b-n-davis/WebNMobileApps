@@ -29,7 +29,9 @@ router.get('/upload',function(req,res){
 });
 router.post('/upload',function(req,res){
   let message='Item successfully uploaded';
+  
   if(req.files==null){
+	console.log("Testing");
     message='You have to add and image to the item you are uploading';
   }else{
     controllers.Product.addProduct(req,function(result){
