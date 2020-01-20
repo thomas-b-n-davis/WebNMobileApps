@@ -36,26 +36,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="new_arrival_iner filter-container" id='data-to-append'>
-                        <!-- <div class="single_arrivel_item weidth_3 mix women men">
-                            <img src="img/arrivel/arrivel_4.png" alt="#">
-                            <div class="hover_text">
-                                <p>Canvas</p>
-                                <a href="single-product.html"><h3>Lorem Canvas Low-Top Sneaker</h3></a>
-                                <div class="rate_icon">
-                                    <a href="#"> <i class="fas fa-star"></i> </a>
-                                    <a href="#"> <i class="fas fa-star"></i> </a>
-                                    <a href="#"> <i class="fas fa-star"></i> </a>
-                                    <a href="#"> <i class="fas fa-star"></i> </a>
-                                    <a href="#"> <i class="fas fa-star"></i> </a>
-                                </div>
-                                <h5></h5>
-                                <div class="social_icon">
-                                    <a href="#"><i class="ti-heart"></i></a>
-                                    <a href="#"><i class="ti-bag"></i></a>
-                                </div>
-                            </div>
-                        </div> -->
-                        
                     </div>
                 </div> 
             </div>
@@ -105,6 +85,7 @@
     <% include ./partials/footer %>
 
     <script>
+        let innerData = "";
         var settings = {
           "url": "http://localhost:28090/product/getAll",
           "method": "GET",
@@ -116,22 +97,36 @@
 
         $.ajax(settings).done(function (response) {
             let htmlData="";
-            for(var data in response.rows){
-                let innerData = response.rows[data];
+            
+            for(var i = 0;i<6;i++){
+                innerData = response.rows[i];
                 let imageObject = innerData.image[0];
+                
                 htmlData += `
                 <div class="single_arrivel_item weidth_3 mix women men">
-                        <a href="/product"> <img src="`+ imageObject.path+`" alt="#">
+                        <a href="/product" onClick="saveObject();"> <img src="`+ imageObject.path+`" alt="#">
                     <div class="hover_text">
                         <p>`+innerData.name+`</p>
-                        <h3>`+innerData.description+`</h3>
+                        <h3 id="someDiv">`+innerData.description+`</h3>
                         <h5>`+innerData.price+`</h5>
                     </div>
                 </a>
                 </div>
-                `                
-
+                `               
             }
             $("#data-to-append").html(htmlData);
         });
+
+        function saveObject(){
+        alert(innerData.price);
+        }
+
 </script>
+
+<style>
+        #someDiv {
+            line-height: 1.5em;
+            height: 3em;       /* height is 2x line-height, so two lines will display */
+            overflow: hidden;  /* prevents extra lines from being visible */
+        }
+</style>
