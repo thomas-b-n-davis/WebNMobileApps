@@ -1,132 +1,148 @@
 <% include ./partials/header %>
 
-    <!-- banner part start-->
-    <section class="banner_part">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7">
-                    <div class="banner_slider">
-                        <div class="single_banner_slider">
-                            <div class="banner_text">
-                                <div class="banner_text_iner">
-                                    <h5>Winter Fasion</h5>
-                                    <h1>Fashion Collection 2019</h1>
-                                    <a href="/shop" class="btn_1">shop now</a>
-                                </div>
+<!-- banner part start-->
+<section class="banner_part">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="banner_slider">
+                    <div class="single_banner_slider">
+                        <div class="banner_text">
+                            <div class="banner_text_iner">
+                                <h5>Winter Fasion</h5>
+                                <h1>Fashion Collection 2019</h1>
+                                <a href="/shop" class="btn_1">shop now</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- new arrival part here -->
-    <section class="new_arrival section_padding">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <div class="arrival_tittle">
-                        <h2>new arrival</h2>
-                    </div>
+<!-- new arrival part here -->
+<section class="new_arrival section_padding">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="arrival_tittle">
+                    <h2>new arrival</h2>
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="new_arrival_iner filter-container" id='data-to-append'>
-                    </div>
-                </div> 
-            </div>
-        </div>
-    </section>
-    <!-- new arrival part end -->
-
-    <!-- free shipping here -->
-    <section class="shipping_details section_padding border_top">
-        <div class="container">
-            <center><h1>How it Works</h1><br/><hr/></center>
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_shopping_details">
-                        <img src="img/icon/icon_1.png" alt="">
-                        <h4>Free shipping</h4>
-                        <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_shopping_details">
-                        <img src="img/icon/icon_2.png" alt="">
-                        <h4>Free shipping</h4>
-                        <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_shopping_details">
-                        <img src="img/icon/icon_3.png" alt="">
-                        <h4>Free shipping</h4>
-                        <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_shopping_details">
-                        <img src="img/icon/icon_4.png" alt="">
-                        <h4>Free shipping</h4>
-                        <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
-                    </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="new_arrival_iner filter-container" id='data-to-append'>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- free shipping end -->
-    
+    </div>
+</section>
+<!-- new arrival part end -->
 
-    <% include ./partials/footer %>
+<!-- free shipping here -->
+<section class="shipping_details section_padding border_top">
+    <div class="container">
+        <center>
+            <h1>How it Works</h1><br />
+            <hr />
+        </center>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="single_shopping_details">
+                    <img src="img/icon/icon_1.png" alt="">
+                    <h4>Free shipping</h4>
+                    <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single_shopping_details">
+                    <img src="img/icon/icon_2.png" alt="">
+                    <h4>Free shipping</h4>
+                    <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single_shopping_details">
+                    <img src="img/icon/icon_3.png" alt="">
+                    <h4>Free shipping</h4>
+                    <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single_shopping_details">
+                    <img src="img/icon/icon_4.png" alt="">
+                    <h4>Free shipping</h4>
+                    <p>Divided face for bearing the divide unto seed winged divided light Forth.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- free shipping end -->
 
-    <script>
-        let innerData = "";
-        var settings = {
-          "url": "http://localhost:28090/product/getAll",
-          "method": "GET",
-          "timeout": 0,
-          "headers": {
+
+<% include ./partials/footer %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    let innerData = "";
+    let res = "";
+    var settings = {
+        "url": "http://localhost:28090/product/getAll",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
             "Content-Type": "application/x-www-form-urlencoded"
-          }
-        };
+        }
+    };
 
-        $.ajax(settings).done(function (response) {
-            let htmlData="";
-            
-            for(var i = 0;i<6;i++){
-                innerData = response.rows[i];
-                let imageObject = innerData.image[0];
-                
-                htmlData += `
+    $.ajax(settings).done(function (response) {
+        let htmlData = "";
+        res = response.rows;
+
+        for (var i = 0; i < 6; i++) {
+            innerData = response.rows[i];
+            let imageObject = innerData.image[0];
+
+            htmlData += `
                 <div class="single_arrivel_item weidth_3 mix women men">
-                        <a href="/product" onClick="saveObject();"> <img src="`+ imageObject.path+`" alt="#">
+                        <a href="/product" class="submitBtn" id="`+ i + `"> <img src="` + imageObject.path + `" alt="#">
                     <div class="hover_text">
-                        <p>`+innerData.name+`</p>
-                        <h3 id="someDiv">`+innerData.description+`</h3>
-                        <h5>`+innerData.price+`</h5>
+                        <p>`+ innerData.name + `</p>
+                        <h3 id="someDiv">`+ innerData.description + `</h3>
+                        <h5>`+ innerData.price + `</h5>
                     </div>
                 </a>
                 </div>
-                `               
-            }
-            $("#data-to-append").html(htmlData);
+                `
+        }
+        $("#data-to-append").html(htmlData);
+    });
+
+    $(document).ready(function () {
+
+        $(".submitBtn").on("click", function (e) {
+            var item_index = $(this).attr("id");
+            var itemObject = res[item_index]
+            localStorage.setItem("itemObject", JSON.stringify(itemObject));
+
         });
 
-        function saveObject(){
-        alert(innerData.price);
-        }
+
+    });
+
 
 </script>
 
 <style>
-        #someDiv {
-            line-height: 1.5em;
-            height: 3em;       /* height is 2x line-height, so two lines will display */
-            overflow: hidden;  /* prevents extra lines from being visible */
-        }
+    #someDiv {
+        line-height: 1.5em;
+        height: 3em;
+        /* height is 2x line-height, so two lines will display */
+        overflow: hidden;
+        /* prevents extra lines from being visible */
+    }
 </style>
