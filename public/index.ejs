@@ -102,10 +102,12 @@
     $.ajax(settings).done(function (response) {
         let htmlData = "";
         res = response.rows;
+        
 
         for (var i = 0; i < 6; i++) {
             innerData = response.rows[i];
             let imageObject = innerData.image[0];
+            console.log("image array Length = "+innerData.image.length);
 
             htmlData += `
                 <div class="single_arrivel_item weidth_3 mix women men">
@@ -121,6 +123,7 @@
         }
         $("#data-to-append").html(htmlData);
     });
+
 
     $(document).ready(function () {
 
