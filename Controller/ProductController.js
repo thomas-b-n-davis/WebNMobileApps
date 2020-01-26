@@ -66,8 +66,8 @@ exports.getProductByName = (req, res, next) =>{
   
 exports.addProduct  = (req, callbackData) =>{
 	var data=req.body;
-	services.Product.addProductQuery(
-	  {
+	
+	services.Product.addProductQuery({
 	  name : data.name,
 	  price : data.price,
 	  description : data.description,
@@ -81,9 +81,11 @@ exports.addProduct  = (req, callbackData) =>{
 		"user": null
 	  })
 	} else {
+		console.log("* product callback status =  "+callback.status)
 		return callbackData({
 		"status": "sucess",
 		"id": callback.id
+		
 	  })
 	}
   })
