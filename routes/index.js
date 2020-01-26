@@ -13,7 +13,6 @@ var controllers = require("../Controller/controller_index");
 // }); 
 
 router.get('/',function(req,res){
-	
   	res.render('index');
 });
 
@@ -29,6 +28,7 @@ router.get('/upload',function(req,res){
 });
 router.post('/upload',function(req,res){
   let message='Item successfully uploaded';
+  
   if(req.files==null){
     message='You have to add and image to the item you are uploading';
   }else{
