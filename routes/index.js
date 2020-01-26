@@ -51,6 +51,10 @@ router.post('/upload',function(req,res){
 router.get('/selling',function(req,res){
   res.render('selling');
 });
+router.get('/messages/:id',function(req,res){
+  res.render('sellingmessages');
+});
+
 router.get('/login',function(req,res){
   res.render('login');
 });

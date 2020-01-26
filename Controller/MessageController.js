@@ -3,16 +3,10 @@ services = require("../Services/service_index");
 exports.getAllCommunications = (req, res, next) => {
   var user_id = req.body.user_id;
   services.Message.getAllCommunicationsQuery(user_id, (rows) => {
-    if (!rows || !rows.length) {
-      res.json({
-        "status": "failed",
-        "user": null
-      })
-    } else {
-      res.json({
+    console.log(rows);
+    res.json({
         rows
-      })
-    }
+    })
   })
 }
 
