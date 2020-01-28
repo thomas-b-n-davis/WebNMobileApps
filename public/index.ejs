@@ -86,7 +86,6 @@
 
 
 <% include ./partials/footer %>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
     let innerData = "";
     let res = "";
@@ -103,8 +102,12 @@
         let htmlData = "";
         res = response.rows;
         
+        let limit=6;
 
-        for (var i = 0; i < 6; i++) {
+        if(response.rows.length<6)
+            limit=response.rows.length;
+            
+        for (var i = 0; i < limit; i++) {
             innerData = response.rows[i];
             let imageObject = innerData.image[0];
             console.log("image array Length = "+innerData.image.length);

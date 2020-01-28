@@ -51,8 +51,14 @@ router.post('/upload',function(req,res){
 router.get('/selling',function(req,res){
   res.render('selling');
 });
+
+router.get('/conversation/:id/product/:product',function(req,res){
+  console.log(req.params);
+  res.render('conversation',{product:req.params.product,id:req.params.id,path:'../../../'});
+});
+
 router.get('/messages/:id',function(req,res){
-  res.render('sellingmessages');
+  res.render('sellingmessages',{id:req.params.id,path:'../'});
 });
 
 router.get('/login',function(req,res){

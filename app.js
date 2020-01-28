@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 let session=require('express-session');
 var index = require('./routes/index');
+var partials      = require('express-partials');
 
 var app = express();
 app.use(session({
@@ -24,6 +25,8 @@ app.set('view engine', 'ejs');
 app.use('/', index);
 var publicDir = require('path').join(__dirname,'/public');
 app.use(express.static(publicDir));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(partials());
 
 
 

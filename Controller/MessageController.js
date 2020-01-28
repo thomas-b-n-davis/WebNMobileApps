@@ -2,8 +2,7 @@ services = require("../Services/service_index");
 
 exports.getAllCommunications = (req, res, next) => {
   var user_id = req.body.user_id;
-  services.Message.getAllCommunicationsQuery(user_id, (rows) => {
-    console.log(rows);
+  services.Message.getAllCommunicationsQuery(user_id,req.body.product_id, (rows) => {
     res.json({
         rows
     })
@@ -11,22 +10,12 @@ exports.getAllCommunications = (req, res, next) => {
 }
 
 exports.getAllMessages = (req, res, next) => {
-  console.log(req.body);
   var data = req.body;
-
-
-  services.Message.getAllMessagesQuery(data.receiver_id, data.sender_id, (rows) => {
-    if (!rows || !rows.length) {
-		  res.json({
-			"status": "failed",
-			"user": null
-		  })
-		} else {
-		  res.json({
-			rows
-		  })
-		}
-	  })
+  services.Message.getAllMessagesQuery(data.product_id, data.user_id, (rows) => {
+    res.json({
+      rows
+      })
+	})
 
 }
 

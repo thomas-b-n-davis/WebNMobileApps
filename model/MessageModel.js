@@ -26,7 +26,7 @@ var Message = sequelize.define("messages",{
     },
     timestamp : {
       type: Sequelize.TIME,
-      allowNull : false,
+      allowNull : true,
     }
   }
 )
