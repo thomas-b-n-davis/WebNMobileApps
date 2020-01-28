@@ -2,6 +2,7 @@ services = require("../Services/service_index");
 
 exports.getAllProducts  = (req, res, next) =>{
 	services.Product.getAllProductsQuery((rows) => {
+
 		if (!rows || !rows.length) {
 		  res.json({
 			"status": "failed",
@@ -14,6 +15,23 @@ exports.getAllProducts  = (req, res, next) =>{
 		}
 	  })
   }
+
+ //  exports.getProductBought  = (req, res, next) =>{
+	// services.Product.getProductBought(req.body.user_id,(rows) => {
+	// 	if (!rows || !rows.length) {
+	// 	  res.json({
+	// 		"status": "failed",
+	// 		"user": null
+	// 	  })
+	// 	} else {
+	// 	  res.json({
+	// 		rows
+	// 	  })
+	// 	}
+	//   })
+ //  }
+
+  
   
 exports.getProductByName = (req, res, next) =>{
 	var name=req.body.name;
@@ -40,9 +58,31 @@ exports.getProductByName = (req, res, next) =>{
 			"user": null
 		  })
 		} else {
-		  res.json({
-			rows
-		  })
+			let product=rows;
+			  services.Product.getImages(id,(rows) => {
+				if (!rows || !rows.length) {
+				  res.json({
+					"status": "failed",
+					"user": null
+				  })
+				} else {
+					let images=rows;
+					  services.Message.getAllMessagesQuery(id,req.body.user_id,(rows) => {
+						if (!rows || !rows.length) {
+						  res.json({
+							"status": "failed",
+							"user": null
+						  })
+						} else {
+						  res.json({
+							images:images,
+							rows:product,
+							messages:rows
+						  })
+						}
+					  })
+				}
+			  })
 		}
 	  })
   }

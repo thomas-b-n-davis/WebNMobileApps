@@ -1,6 +1,23 @@
 var models = require("../Model/model_index");
 
 
+
+module.exports.getOrdersByIdQuery = function (user_id,product_id,callback) {
+	models.Order.findAll({
+		where: {
+		  product_id:product_id
+		}
+	  })
+	  .then(function (related) {
+		//console.log(related[0].role.role);
+		callback(related);
+	  })
+	  .catch(function (err) {
+		//console.log(err);
+		callback(err);
+	  });
+  }
+
 module.exports.getAllOrdersQuery = function (user_id,callback) {
 	models.Order.findAll({
 		where: {

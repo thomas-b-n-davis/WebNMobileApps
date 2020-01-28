@@ -3,16 +3,17 @@ services = require("../Services/service_index");
 exports.getAllOrders  = (req, res, next) =>{
 	var user_id=req.body.user_id;
 	services.Order.getAllOrdersQuery(user_id,(rows) => {
-		if (!rows || !rows.length) {
-		  res.json({
-			"status": "failed",
-			"user": null
-		  })
-		} else {
-		  res.json({
+		res.json({
 			rows
-		  })
-		}
+		})
+	  })
+  }
+  exports.getAllOrderById  = (req, res, next) =>{
+	var user_id=req.body.user_id;
+	services.Order.getOrdersByIdQuery(user_id,req.body.product_id,(rows) => {
+		res.json({
+			rows
+		})
 	  })
   }
   
@@ -23,8 +24,6 @@ exports.addOrder  = (req, res, next) =>{
 	  {
 	  product_id : data.product_id,
 	  user_id : data.user_id,
-	  timestamp : data.timestamp,
-	  status : data.status
   }, (callback) => {
 	if (callback.status=="failed") {
 	  res.json({

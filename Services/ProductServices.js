@@ -12,7 +12,7 @@ module.exports.getAllProductsQuery = function (callback) {
 		callback(related);
 	  })
 	  .catch(function (err) {
-		//console.log(err);
+		// console.log(err);
 		callback(err);
 	  });
   }
@@ -50,6 +50,23 @@ module.exports.getAllProductsQuery = function (callback) {
 	  });
   }
 
+  // module.exports.getProductBought = function (user_id, callback) {
+  // 	models.Product.findAll({
+		// include: [{
+		//     model: OrderModel,
+		//     where: {user_id: user_id}
+		//    }]
+	 //  })
+	 //  .then(function (related) {
+		// //console.log(related[0].role.role);
+		// callback(related);
+	 //  })
+	 //  .catch(function (err) {
+		// //console.log(err);
+		// callback(err);
+	 //  });
+  // }
+
   module.exports.getProductByUserIdQuery = function (user_id, callback) {
 	models.Product.findAll({
 		where: {
@@ -85,6 +102,22 @@ module.exports.getAllProductsQuery = function (callback) {
 	}).catch((err) => {
 	  callback(err);
 	})
+  }
+
+  module.exports.getImages = function (id, callback) {
+	models.Image.findAll({
+		where: {
+		  product_id:id
+		}
+	  })
+	  .then(function (related) {
+		//console.log(related[0].role.role);
+		callback(related);
+	  })
+	  .catch(function (err) {
+		//console.log(err);
+		callback(err);
+	  });
   }
   
   

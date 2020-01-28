@@ -1,5 +1,5 @@
-<% include ./partials/header %>
-<link rel="stylesheet" href="css/lightslider.min.css">
+<% include ./partials/deep_header %>
+<link rel="stylesheet" href="../../css/lightslider.min.css">
 <!-- breadcrumb start-->
 <section class="breadcrumb breadcrumb_bg">
   <div class="container">
@@ -33,32 +33,55 @@
           <p id="description">
           </p>
           <div class="review_box">
-            <h4>Messages Seller</h4>
-            <form class="row contact_form" action="contact_process.php" method="post" novalidate="novalidate">
+            
+            <div class="oldchat">
+            <div class="chat" style="height:200px;overflow:auto;"></div>
+            <form class="row contact_form_reply" action="" method="post" novalidate="novalidate">
               <div class="col-md-12">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="name" placeholder="Your Full name" />
-                </div>
+              <br/><h4>Send A Messages</h4>
+              <small class="response_msg__"></small>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <input type="email" class="form-control" name="email" placeholder="Email Address" />
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="number" placeholder="Phone Number" />
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <textarea class="form-control" name="message" rows="1" placeholder="Review"></textarea>
+                  <textarea class="form-control" id="message" rows="1" placeholder="Review"></textarea>
                 </div>
               </div>
               <div class="col-md-12 text-right">
-                <button type="submit" value="submit" class="btn_3">
+                <button onclick="sendReply()" type="button" value="submit" class="btn_3 sendBtn">
                   Submit Now
                 </button>
+                <img src="../../img/loading.gif" class="loader"/>
+              </div>
+            </form>
+            </div>
+            <form class="row contact_form" action="" method="post" novalidate="novalidate">
+            <h4>Messages Seller</h4>
+            <small class="response_msg_"></small>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="name" placeholder="Your Full name" />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="email" class="form-control" id="email" placeholder="Email Address" />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="number" placeholder="Phone Number" />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <textarea class="form-control" id="message" rows="1" placeholder="Review"></textarea>
+                </div>
+              </div>
+              <div class="col-md-12 text-right">
+                <button onclick="sendMessage()" type="button" value="submit" class="btn_3 sendBtn">
+                  Submit Now
+                </button>
+                <img src="../../img/loading.gif" class="loader"/>
               </div>
             </form>
           </div>
@@ -71,54 +94,167 @@
 <!--================End Single Product Area =================-->
 
 <!-- product_list part end-->
-<% include ./partials/footer %>
+<% include ./partials/deep_footer %>
 <script>
-  var itemObject = JSON.parse(localStorage.getItem("itemObject"));
-  document.getElementById('name').innerHTML = itemObject.name;
-  document.getElementById('price').innerHTML = itemObject.price;
-  document.getElementById('description').innerHTML = itemObject.description;
+var user=JSON.parse(localStorage.getItem("user"));
+$(".loader").hide();
+let receiver_id="";
+  var settings = {
+          "url": "http://localhost:28090/product/getById/",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({"user_id":user.id,"id":<%=id %>}),
+        };
 
-  var imgArray = new Array();
+  $.ajax(settings).done(function (response) {
+receiver_id=response.rows[0].user_id;
+        document.getElementById('name').innerHTML = response.rows[0].name;
+        document.getElementById('price').innerHTML = "$"+response.rows[0].price;
+        document.getElementById('description').innerHTML = response.rows[0].description;
 
-  let htmlData = "";
+        if(response.messages.length==0){
+          $(".oldchat").hide();
+        }else{
+          $(".contact_form").hide();
+          let chatHistory="";
+          for (var i = 0; i < response.messages.length; i++) {
+            let color='background:#2f7dfc;color:#fff;';
+            let float='';
+            console.log(response.messages[i].sender_id+"==="+user.id);
+            if(response.messages[i].sender_id==user.id){
+              color='background:#cccccc;';
+              float='text-align:right;';
+            }
+            chatHistory+=`<div style="width:95%;`+color+`;`+float+`border:1px solid #ccc;padding:5px 15px;margin:5px;border-radius:10px;">`+response.messages[i].message+`<br/><small>`+response.messages[i].timestamp+`</small></div>`;
+          }
+          $(".chat").html(chatHistory);
+        }
 
-  for (var i = 0; i < itemObject.image.length; i++) {
-    htmlData += `
-    <div data-thumb="`+itemObject.image[i].path+ `">
-      <img src="`+itemObject.image[i].path+`"/>
-    </div>
-    `
+        let htmlData = "";
+
+        for (var i = 0; i < response.images.length; i++) {
+
+          htmlData += `
+          <div data-thumb="../`+response.images[i].path+ `">
+            <img src="../`+response.images[i].path+`"/>
+          </div>
+          `
+        }
+
+        $("#vertical").html(htmlData);
+        loading()
+    });
+
+  function loading(){
+    
+    var product_overview = $('#vertical');
+    if(product_overview.length){
+     product_overview.lightSlider({
+       gallery:true,
+       item:1,
+       verticalHeight:450,
+       thumbItem:4,
+       slideMargin:0,
+       speed:600,
+       autoplay: true,
+       responsive : [
+         {
+             breakpoint:991,
+             settings: {
+                 item:1,
+               }
+         },
+         {
+             breakpoint:576,
+             settings: {
+                 item:1,
+                 slideMove:1,
+                 verticalHeight:350,
+               }
+         }
+     ]
+     });
+    }
   }
 
-  $("#vertical").html(htmlData);
+  function sendMessage(){
+    $(".loader").hide();
+            $(".sendBtn").show();
 
-  var product_overview = $('#vertical');
-  if(product_overview.length){
-   product_overview.lightSlider({
-     gallery:true,
-     item:1,
-     verticalHeight:450,
-     thumbItem:4,
-     slideMargin:0,
-     speed:600,
-     autoplay: true,
-     responsive : [
-       {
-           breakpoint:991,
-           settings: {
-               item:1,
-             }
-       },
-       {
-           breakpoint:576,
-           settings: {
-               item:1,
-               slideMove:1,
-               verticalHeight:350,
-             }
-       }
-   ]
-   });
+            let msg=$("#name").val()+"\n"+$("#email").val()+"\n"+$("#number").val()+"\n"+$("#message").val();
+            var payload = {
+              "url": "http://localhost:28090/message/send/",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"receiver_id":receiver_id,"message":msg,"sender_id":user.id,"product_id":<%=id %>}),
+            };
+
+            $.ajax(payload).done(function (response) {
+                $(".response_msg_").html(""+response.status+"--");
+                $(".loader").hide();
+                $(".sendBtn").show();
+
+            });
+  }
+
+  function sendReply(){
+    $(".loader").hide();
+            $(".sendBtn").show();
+
+            var payload = {
+              "url": "http://localhost:28090/message/send/",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"receiver_id":receiver_id,"message":$("#message").val(),"sender_id":user.id,"product_id":<%=id %>}),
+            };
+
+            $.ajax(payload).done(function (response) {
+                $(".response_msg__").html(""+response.status+"--");
+                $(".loader").hide();
+                $(".sendBtn").show();
+                getMessages();
+            });
+  }
+
+  function getMessages(){
+     var settings = {
+          "url": "http://localhost:28090/message/getAllMessages/",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({"user_id":user.id,"product_id":<%=id %>}),
+        };
+
+        $.ajax(settings).done(function (response) {
+            if(response.rows.length==0){
+              $(".oldchat").hide();
+            }else{
+              $(".contact_form").hide();
+              let chatHistory="";
+              for (var i = 0; i < response.rows.length; i++) {
+                let color='background:#2f7dfc;color:#fff;';
+                let float='';
+                console.log(response.rows[i].sender_id+"==="+user.id);
+                if(response.rows[i].sender_id==user.id){
+                  color='background:#cccccc;';
+                  float='text-align:right;';
+                }
+                chatHistory+=`<div style="width:95%;`+color+`;`+float+`border:1px solid #ccc;padding:5px 15px;margin:5px;border-radius:10px;">`+response.rows[i].message+`<br/><small>`+response.rows[i].timestamp+`</small></div>`;
+              }
+              $(".chat").html(chatHistory);
+            }
+        });
   }
 
 </script>

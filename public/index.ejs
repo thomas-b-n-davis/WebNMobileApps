@@ -91,22 +91,23 @@
     let res = "";
     var settings = {
         "url": "http://localhost:28090/product/getAll",
-        "method": "GET",
+        "method": "POST",
         "timeout": 0,
         "headers": {
             "Content-Type": "application/x-www-form-urlencoded"
         }
-    };
+    }; 
 
     $.ajax(settings).done(function (response) {
         let htmlData = "";
+        console.log(response);
         res = response.rows;
         
         let limit=6;
 
         if(response.rows.length<6)
             limit=response.rows.length;
-            
+
         for (var i = 0; i < limit; i++) {
             innerData = response.rows[i];
             let imageObject = innerData.image[0];
@@ -114,7 +115,7 @@
 
             htmlData += `
                 <div class="single_arrivel_item weidth_3 mix women men">
-                        <a href="/product" class="submitBtn" id="`+ i + `"> <img src="` + imageObject.path + `" alt="#">
+                        <a href="/product/`+innerData.id+`" class="submitBtn" id="`+ i + `"> <img src="` + imageObject.path + `" alt="#">
                     <div class="hover_text">
                         <p>`+ innerData.name + `</p>
                         <h3 id="someDiv">`+ innerData.description + `</h3>

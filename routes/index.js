@@ -52,6 +52,10 @@ router.get('/selling',function(req,res){
   res.render('selling');
 });
 
+router.get('/buying',function(req,res){
+  res.render('buying');
+});
+
 router.get('/conversation/:id/product/:product',function(req,res){
   console.log(req.params);
   res.render('conversation',{product:req.params.product,id:req.params.id,path:'../../../'});
@@ -72,21 +76,21 @@ router.get('/shop',function(req,res){
   res.render('shop');
 });
 
-router.get('/product',function(req,res){
-  res.render('product');
+router.get('/product/:id',function(req,res){
+  res.render('product',{id:req.params.id,path:'../../'});
 });
-
 
 
 router.post('/user/login', controllers.User.getLogin);
 router.post('/user/add', controllers.User.createUser);
 router.get('/user/getAll', controllers.User.getAllUser);
 
-router.get('/product/getAll', controllers.Product.getAllProducts);
-router.get('/product/getById', controllers.Product.getProductById);
+router.post('/product/getAll', controllers.Product.getAllProducts);
+router.post('/product/getById', controllers.Product.getProductById);
 router.get('/product/getByUserId/:id', controllers.Product.getProductByUserId);
 router.get('/product/getByName', controllers.Product.getProductByName);
 router.post('/product/add', controllers.Product.addProduct);
+// router.post('/product/getProductBought', controllers.Product.getProductBought);
 router.post('/product/changeProductStatus', controllers.Product.changeProductStatus);
 
 router.post('/message/getAllCommunications', controllers.Message.getAllCommunications);
@@ -94,5 +98,6 @@ router.post('/message/getAllMessages', controllers.Message.getAllMessages);
 router.post('/message/send', controllers.Message.send);
 
 router.post('/orders/getAllOrders', controllers.Order.getAllOrders);
+router.post('/orders/getAllOrderById', controllers.Order.getAllOrderById);
 router.post('/orders/addOrder', controllers.Order.addOrder);
 module.exports = router;

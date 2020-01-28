@@ -45,6 +45,9 @@
                                     </div>
                                   </div>
                                   <div class="col-md-12 text-right">
+                                    <button type="button" onclick="SellData();" value="submit" class="btn_3 orderMsg">
+                                      Sell To this user
+                                    </button>
                                     <button type="button" onclick="submitData();" value="submit" class="btn_3 sendMsg">
                                       Submit Now
                                     </button>
@@ -52,6 +55,7 @@
                                     <img src="../../../img/loading.gif" class="loader"/>
                                   </div>
                                 </form>
+
                             </div>
                         </div>
                         
@@ -66,9 +70,10 @@
 
 <script>
     $(".loader").hide();
+    $(".orderMsg").hide();
     let params = window.location.search;
      
-      let receiver_id="";
+      let receiver_id="",sender_id="";
       var user=JSON.parse(localStorage.getItem("user"));
 
       messages();
@@ -89,6 +94,9 @@
             for(var data in response.rows){
                 let innerData=response.rows[data];
                 receiver_id=innerData.receiver_id;
+                sender_id=innerData.sender_id;
+
+
                 
                 htmlData=htmlData+"<div class=\"row\">";
 
@@ -104,6 +112,7 @@
                 htmlData=htmlData+"</div>";
             }
             $(".grid").html(htmlData);
+            GetOrderData();
         });
         }
 
@@ -127,6 +136,49 @@
                 $(".sendMsg").show();
 
                 messages();
+            });
+        }
+
+        function SellData(){
+            $(".loader").hide();
+            $(".sendMsg").show();
+
+            var update = {
+              "url": "http://localhost:28090/orders/addOrder/",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"user_id":sender_id,"product_id":<%=product %>}),
+            };
+
+            $.ajax(update).done(function (response) {
+            console.log(response);
+                $(".loader").hide();
+                $(".sendMsg").show();
+                location.reload();
+            });
+        }
+
+        function GetOrderData(){
+            $(".loader").hide();
+            $(".sendMsg").show();
+
+            var update = {
+              "url": "http://localhost:28090/orders/getAllOrderById/",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"user_id":sender_id,"product_id":<%=product %>}),
+            };
+
+            $.ajax(update).done(function (response) {
+                if(response.rows.length==0){
+                    $(".orderMsg").show();
+                }
             });
         }
 

@@ -17,11 +17,11 @@ var Order = sequelize.define("orders",{
   },
   status : {
       type: Sequelize.BIGINT(11),
-    allowNull : false,
+    allowNull : true,
   },
   timestamp : {
     type: Sequelize.TIME,
-    allowNull : false,
+    allowNull : true,
   }
   }
 )
