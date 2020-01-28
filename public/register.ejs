@@ -41,7 +41,7 @@
               </div>
               <div class="col-sm-8">
                 <div class="form-group">
-                  <input class="form-control" name="tel" id="tel" type="email" onfocus="this.placeholder = ''"
+                  <input class="form-control" name="tel" id="tel" type="tel" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = 'Enter telephone'" placeholder='Telephone'>
                 </div>
               </div>
@@ -78,6 +78,8 @@
   <!--::subscribe_area part end::-->
 <% include ./partials/footer %>
 <script>
+  
+
   function userLogin(){
     var settings = {
       "url": "http://localhost:28090/user/add",

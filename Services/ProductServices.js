@@ -71,7 +71,8 @@ module.exports.getAllProductsQuery = function (callback) {
 	models.Product.findAll({
 		where: {
 		  user_id:user_id
-		}
+		},
+		include: {model: Image, as:"image"}
 	  })
 	  .then(function (related) {
 		//console.log(related[0].role.role);
@@ -87,7 +88,6 @@ module.exports.getAllProductsQuery = function (callback) {
   module.exports.addProductQuery = function (product, callback) {
   
 	models.Product.build(product).save().then((data) => {
-	  console.log(data.dataValues);
 	  callback(data.dataValues);
 	}).catch((err) => {
 	  callback(err);

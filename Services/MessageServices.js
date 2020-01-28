@@ -2,8 +2,8 @@ var sequelize = require('../common/mysql');
 var models = require("../Model/model_index");
 
 module.exports.getAllMessagesQuery = function (product_id, sender_id, callback) {
-  var statement = "SELECT messages.receiver_id,messages.sender_id,users.id,users.name,messages.message,messages.timestamp FROM messages,users where (receiver_id="+sender_id+" OR sender_id="+sender_id+") AND product_id="+product_id+ " ORDER BY timestamp DESC";
-  
+  //var statement = "SELECT messages.receiver_id,messages.sender_id,users.id,users.name,messages.message,messages.timestamp FROM messages,users where (receiver_id="+sender_id+" OR sender_id="+sender_id+") AND product_id="+product_id+ " ORDER BY timestamp DESC";
+  let statement ="SELECT u.name,m.* FROM `messages` m INNER JOIN users u ON u.id=m.sender_id where (receiver_id="+sender_id+" OR sender_id="+sender_id+") AND product_id="+product_id+"  ORDER BY timestamp DESC";
   sequelize.query(statement).spread((data) => {
     callback(data);
   });

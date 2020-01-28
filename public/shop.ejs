@@ -9,7 +9,9 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <p>Home / Shop</p>
+                            <p>Seacrh for anything</p>
+
+                            <input type="text" name="search" id="search" style="width:90%;border-radius:40px;height:62px;border:1px solid #fff;padding:0px 30px;"/>
                         </div>
                     </div>
                 </div>
@@ -40,7 +42,7 @@
         let innerData = "";
         var settings = {
           "url": "http://localhost:28090/product/getAll",
-          "method": "GET",
+          "method": "POST",
           "timeout": 0,
           "headers": {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -50,7 +52,7 @@
         $.ajax(settings).done(function (response) {
             let htmlData="";
             
-            for(var i = 0;i<6;i++){
+            for(var i = 0;i<response.rows.length;i++){
                 innerData = response.rows[i];
                 let imageObject = innerData.image[0];
                 
@@ -58,10 +60,10 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="single_category_product">
                                     <div class="single_category_img">
-                                        <img src="`+imageObject.path+`" alt="">  
+                                        <a href="/product/`+innerData.id+`"><img src="`+imageObject.path+`" alt=""/></a>  
                                         <div class="category_product_text">
-                                            <a href="/product"><h5>`+innerData.name+`</h5></a>
-                                            <p>`+innerData.price+`</p>
+                                            <a href="/product/`+innerData.id+`"><h5>`+innerData.name+`</h5></a>
+                                            <p>$`+innerData.price+`</p>
                                         </div>
                                     </div>
                                 </div>

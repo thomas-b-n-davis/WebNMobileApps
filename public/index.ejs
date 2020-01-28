@@ -109,21 +109,25 @@
             limit=response.rows.length;
 
         for (var i = 0; i < limit; i++) {
+            let imgPath="";
             innerData = response.rows[i];
             let imageObject = innerData.image[0];
-            console.log("image array Length = "+innerData.image.length);
-
+            if(typeof imageObject !== 'undefined') 
+                if(typeof imageObject.path !== 'undefined') {
+                    imgPath=imageObject.path;
+            
             htmlData += `
                 <div class="single_arrivel_item weidth_3 mix women men">
-                        <a href="/product/`+innerData.id+`" class="submitBtn" id="`+ i + `"> <img src="` + imageObject.path + `" alt="#">
+                        <a href="/product/`+innerData.id+`" class="submitBtn" id="`+ i + `"> <img src="` + imgPath + `" alt="#">
                     <div class="hover_text">
                         <p>`+ innerData.name + `</p>
                         <h3 id="someDiv">`+ innerData.description + `</h3>
-                        <h5>`+ innerData.price + `</h5>
+                        <h5>$`+ innerData.price + `</h5>
                     </div>
                 </a>
                 </div>
                 `
+                }
         }
         $("#data-to-append").html(htmlData);
     });

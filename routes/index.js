@@ -28,20 +28,31 @@ router.get('/upload',function(req,res){
 });
 router.post('/upload',function(req,res){
   let message='Item successfully uploaded';
-  
   if(req.files==null){
     message='You have to add and image to the item you are uploading';
   }else{
     controllers.Product.addProduct(req,function(result){
-      console.log(result.id);
-      for(let n=0;n<req.files.file.length;n++){
-        req.files.file[n].mv(__dirname + '/../uploads/' + req.files.file[n]['name'], function(err) {
-          if (err) {
-            // return res.status(500).send(err);
-          }else{
-            controllers.Product.addProductImage('uploads/' + req.files.file[n]['name'],result.id,function(result){});
-          }
-        });
+      console.log("created product::");
+      if(Array.isArray(req.files.file)==false){
+        req.files.file.mv(__dirname + '/../uploads/' + req.files.file['name'], function(err) {
+            if (err) {}else{
+              console.log("uploaded::"+req.files.file['name']);
+              controllers.Product.addProductImage('uploads/' + req.files.file['name'],result.id,function(result){});
+            }
+          });
+      }else{
+        for(let n=0;n<req.files.file.length;n++){
+          console.log("Files : "+req.files.file[n]['name']);
+          req.files.file[n].mv(__dirname + '/../uploads/' + req.files.file[n]['name'], function(err) {
+            if (err) {
+              console.log(err);
+              // return res.status(500).send(err);
+            }else{
+              console.log("uploaded::"+req.files.file[n]['name']);
+              controllers.Product.addProductImage('uploads/' + req.files.file[n]['name'],result.id,function(result){});
+            }
+          });
+        }
       }
     });
   }

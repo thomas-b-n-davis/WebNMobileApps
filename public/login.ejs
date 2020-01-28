@@ -24,7 +24,7 @@
         <div class="col-lg-6">
         <h2 class="contact-title">Account Login</h2>
         <div class="response"></div>
-          <form class="form-contact contact_form" action="" method="post" id="contactForm">
+          <form class="form-contact" action="" method="post" id="contactForm">
             <div class="row">
               <div class="col-sm-8">
                 <div class="form-group">
@@ -38,7 +38,7 @@
               </div>
             </div>
             <div class="form-group mt-3">
-              <button onclick="userLogin();" class="btn_3 button-contactForm">Login</button>
+              <button onclick="userLogin();" class="btn_3 ">Login</button>
             </div>
           </form>
         </div>
@@ -78,8 +78,9 @@
     };      
 
     $.ajax(settings).done(function (response) {
-      if(response.status=="failed"){
-        $(".response").html(response.message);
+    console.log(response);
+      if(response.status==="failed"){
+        $(".response").html("Sorry , wrong email or password , kindly check and retry");
         $(".response").css("color","#ff0000");
       }else{
         localStorage.setItem("user", JSON.stringify(response.callback));

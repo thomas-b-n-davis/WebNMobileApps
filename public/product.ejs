@@ -28,18 +28,21 @@
       </div>
       <div class="col-lg-5 offset-lg-1">
         <div class="s_product_text">
-          <h3 id="name"></h3>
+          <h3 id="pname"></h3>
           <h2 id="price"></h2>
           <p id="description">
           </p>
           <div class="review_box">
-            
+            <a class="show_message" onclick="toggleMessages()"><b>Show messages</b></a>
             <div class="oldchat">
             <div class="chat" style="height:200px;overflow:auto;"></div>
             <form class="row contact_form_reply" action="" method="post" novalidate="novalidate">
               <div class="col-md-12">
               <br/><h4>Send A Messages</h4>
-              <small class="response_msg__"></small>
+              
+              </div>
+              <div class="col-md-12">
+              <small class="response_msg__" style="color:#f00;"></small>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
@@ -54,9 +57,12 @@
               </div>
             </form>
             </div>
+
             <form class="row contact_form" action="" method="post" novalidate="novalidate">
             <h4>Messages Seller</h4>
-            <small class="response_msg_"></small>
+            <div class="col-md-12">
+            <small class="response_msg_" style="color:#f00;"></small>
+            </div>
               <div class="col-md-12">
                 <div class="form-group">
                   <input type="text" class="form-control" id="name" placeholder="Your Full name" />
@@ -74,7 +80,7 @@
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <textarea class="form-control" id="message" rows="1" placeholder="Review"></textarea>
+                  <textarea class="form-control" id="message_new" rows="1" placeholder="Review"></textarea>
                 </div>
               </div>
               <div class="col-md-12 text-right">
@@ -97,7 +103,11 @@
 <% include ./partials/deep_footer %>
 <script>
 var user=JSON.parse(localStorage.getItem("user"));
-$(".loader").hide();
+document.getElementById('name').value = user.name;
+document.getElementById('email').value = user.email;
+document.getElementById('number').value = user.telephone;
+
+$(".loader,.show_message").hide();
 let receiver_id="";
   var settings = {
           "url": "http://localhost:28090/product/getById/",
@@ -110,13 +120,16 @@ let receiver_id="";
         };
 
   $.ajax(settings).done(function (response) {
-receiver_id=response.rows[0].user_id;
-        document.getElementById('name').innerHTML = response.rows[0].name;
+    receiver_id=response.rows[0].user_id;
+        document.getElementById('pname').innerHTML = response.rows[0].name;
         document.getElementById('price').innerHTML = "$"+response.rows[0].price;
         document.getElementById('description').innerHTML = response.rows[0].description;
 
+        
+
         if(response.messages.length==0){
           $(".oldchat").hide();
+          $(".show_message").hide();
         }else{
           $(".contact_form").hide();
           let chatHistory="";
@@ -146,6 +159,14 @@ receiver_id=response.rows[0].user_id;
 
         $("#vertical").html(htmlData);
         loading()
+
+        
+        if(response.rows[0].user_id===user.id){
+        
+          $(".oldchat").hide();
+          $(".show_message").hide();
+          $(".contact_form").hide();
+        }
     });
 
   function loading(){
@@ -181,10 +202,19 @@ receiver_id=response.rows[0].user_id;
   }
 
   function sendMessage(){
+    if($("#name").val()==""){
+      $(".response_msg_").html("Full name is mandatory");
+    }else if($("#email").val()==""){
+      $(".response_msg_").html("Email address is mandatory");
+    }else if($("#number").val()==""){
+      $(".response_msg_").html("Contact number is mandatory");
+    }else if($("#message_new").val()==""){
+      $(".response_msg_").html("Message is mandatory");
+    }else{
     $(".loader").hide();
             $(".sendBtn").show();
 
-            let msg=$("#name").val()+"\n"+$("#email").val()+"\n"+$("#number").val()+"\n"+$("#message").val();
+            let msg=$("#name").val()+"<br/>"+$("#email").val()+"<br/>"+$("#number").val()+"<br/>"+$("#message_new").val();
             var payload = {
               "url": "http://localhost:28090/message/send/",
               "method": "POST",
@@ -200,11 +230,20 @@ receiver_id=response.rows[0].user_id;
                 $(".loader").hide();
                 $(".sendBtn").show();
 
+                $(".oldchat").hide();
+                $(".show_message").show();
+                $(".contact_form").hide();
+
+                getMessages();
             });
+          }
   }
 
   function sendReply(){
-    $(".loader").hide();
+  if($("#message").val()==""){
+      $(".response_msg__").html("Contact number is mandatory");
+    }else{
+      $(".loader").hide();
             $(".sendBtn").show();
 
             var payload = {
@@ -223,6 +262,7 @@ receiver_id=response.rows[0].user_id;
                 $(".sendBtn").show();
                 getMessages();
             });
+    }
   }
 
   function getMessages(){
@@ -255,6 +295,10 @@ receiver_id=response.rows[0].user_id;
               $(".chat").html(chatHistory);
             }
         });
+  }
+
+  function toggleMessages(){
+    $(".oldchat").slideToggle();
   }
 
 </script>

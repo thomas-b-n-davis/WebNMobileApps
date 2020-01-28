@@ -52,38 +52,17 @@ exports.getProductByName = (req, res, next) =>{
   exports.getProductById = (req, res, next) =>{
 	var id=req.body.id;
 	services.Product.getProductByIdQuery(id,(rows) => {
-		if (!rows || !rows.length) {
-		  res.json({
-			"status": "failed",
-			"user": null
-		  })
-		} else {
-			let product=rows;
+		let product=rows;
 			  services.Product.getImages(id,(rows) => {
-				if (!rows || !rows.length) {
-				  res.json({
-					"status": "failed",
-					"user": null
-				  })
-				} else {
-					let images=rows;
+				let images=rows;
 					  services.Message.getAllMessagesQuery(id,req.body.user_id,(rows) => {
-						if (!rows || !rows.length) {
-						  res.json({
-							"status": "failed",
-							"user": null
-						  })
-						} else {
-						  res.json({
+						res.json({
 							images:images,
 							rows:product,
 							messages:rows
 						  })
-						}
 					  })
-				}
 			  })
-		}
 	  })
   }
   
@@ -121,7 +100,6 @@ exports.addProduct  = (req, callbackData) =>{
 		"user": null
 	  })
 	} else {
-		console.log("* product callback status =  "+callback.status)
 		return callbackData({
 		"status": "sucess",
 		"id": callback.id
