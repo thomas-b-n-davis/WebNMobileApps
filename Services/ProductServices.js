@@ -94,6 +94,27 @@ module.exports.getAllProductsQuery = function (callback) {
 	})
   }
 
+  module.exports.updateProductQuery = function (product, callback) {
+  	models.Product.update({
+	  name: product.name,
+	  price: product.price,
+	  description: product.description,
+	},{
+	  where: {
+		user_id: product.user_id,
+		id:product.pid
+	  }
+	})
+	  .then(function (related) {
+		callback(related);
+	  })
+	  .catch(function (err) {
+		callback(err);
+	  });
+  }
+
+  
+
   module.exports.addImageQuery = function (image, callback) {
   
 	models.Image.build(image).save().then((data) => {
@@ -116,6 +137,20 @@ module.exports.getAllProductsQuery = function (callback) {
 	  })
 	  .catch(function (err) {
 		//console.log(err);
+		callback(err);
+	  });
+  }
+
+  module.exports.deleteImage = function (data,callback) {
+  	models.Image.destroy({
+	  where: {
+		id: data.id,
+	  }
+	})
+	  .then(function (related) {
+		callback(related);
+	  })
+	  .catch(function (err) {
 		callback(err);
 	  });
   }

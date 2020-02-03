@@ -1,0 +1,137 @@
+<% include ./partials/deep_header %>
+<link rel="stylesheet" href="css/lightslider.min.css">
+  <!-- breadcrumb start-->
+  <section class="breadcrumb breadcrumb_bg">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-lg-12">
+                  <div class="breadcrumb_iner">
+                      <div class="breadcrumb_iner_item">
+                          <p>Home/Shop/Single product</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!-- breadcrumb start-->
+
+  <!--================Single Product Area =================-->
+  <div class=" section_padding">
+    <div class="container">
+      <div class="row ">
+        <div class="col-lg-5">
+          <div class="">
+            <h2>Item Images</h2>
+            <div class="row" id="images"></div>
+          </div>
+        </div>
+        <div class="col-lg-5 offset-lg-1">
+          <div class="s_product_text">
+            <p>
+                Mill Oil is an innovative oil filled radiator with the most modern technology. If you are looking for something that can make your interior look awesome, and at the same time.
+            </p>
+            <div class="review_box">
+                <h4>Upload An Item to sell</h4>
+                <div style="color:#0000ff"><%=message %></div>
+                <form class="row contact_form" action="/updateupload/<%=id %>" method="post" enctype="multipart/form-data">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                     <input type="hidden" id="user_id" name="user_id"  />
+                     <input type="hidden" id="pid" value="<%=id %>" name="pid" />
+                        <input type="file" class="form-control" name="file"  multiple/>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="name" id="name" placeholder="Item name" required/>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <input type="number" class="form-control" name="price" id="price" placeholder="Item Price" required/>
+                      <input type="hidden" class="form-control" name="user_id" id="seller_id" required/>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <textarea class="form-control" name="description" id="description" rows="10" placeholder="Describe the Item in details" required style="height:120px"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-12 text-right">
+                    <button type="submit" value="submit" class="btn_3">
+                      Submit Now
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--================End Single Product Area =================-->
+
+<% include ./partials/deep_footer %>
+<script>
+  var user=JSON.parse(localStorage.getItem("user"));
+  $("#user_id").val(user.id);
+  loadItem();
+  function loadItem(){
+    var settings = {
+            "url": "http://localhost:28090/product/getById/",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({"user_id":user.id,"id":<%=id %>}),
+          };
+
+    $.ajax(settings).done(function (response) {
+        console.log(response.images);
+        document.getElementById("name").value=response.rows[0].name;
+        document.getElementById("price").value=response.rows[0].price;
+        document.getElementById("description").value=response.rows[0].description;
+
+        let htmlData='';
+        for (var i = 0; i < response.images.length; i++) {
+            let imgPath="";
+            innerData = response.images[i];
+            if(typeof innerData !== 'undefined') 
+                  if(typeof innerData.path !== 'undefined') {
+                      imgPath=innerData.path;
+
+
+            htmlData += `
+                  <div class="col-md-6">
+                    <img src="../` + imgPath + `" alt="#">
+                    <a onclick="deleteImage(`+innerData.id+`)" class=\"gridLink\" >Delete this Image</a>
+                  </div>
+                  `;
+            }  
+        }
+        console.log(htmlData);
+        document.getElementById("images").innerHTML=htmlData;
+
+    });
+  }
+
+  function deleteImage(img_id){
+    var settings = {
+            "url": "http://localhost:28090/image",
+            "method": "DELETE",
+            "timeout": 0,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({"user_id":user.id,"product_id":<%=id %>,id:img_id}),
+          };
+
+    $.ajax(settings).done(function (response) {
+        loadItem();
+
+    });
+  }
+</script>

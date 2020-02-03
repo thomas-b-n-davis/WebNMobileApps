@@ -59,6 +59,39 @@ router.post('/upload',function(req,res){
   res.render('upload',{message:message});
 });
 
+
+router.post('/updateupload/:id',function(req,res){
+  let message='Item successfully updates';
+  req.body.pid=req.params.id;
+  controllers.Product.updateProduct(req,function(result){
+    
+      if(Array.isArray(req.files.file)==false){
+        console.log(req.files);
+        req.files.file.mv(__dirname + '/../uploads/' + req.files.file['name'], function(err) {
+            if (err) {}else{
+              controllers.Product.addProductImage('uploads/' + req.files.file['name'],req.body.pid,function(result){});
+            }
+          });
+      }else{
+
+        for(let n=0;n<req.files.file.length;n++){
+          console.log("Files : "+req.files.file[n]['name']);
+          req.files.file[n].mv(__dirname + '/../uploads/' + req.files.file[n]['name'], function(err) {
+            if (err) {
+              console.log(err);
+              // return res.status(500).send(err);
+            }else{
+              console.log("uploaded::"+req.files.file[n]['name']);
+              controllers.Product.addProductImage('uploads/' + req.files.file[n]['name'],req.body.pid,function(result){});
+            }
+          });
+        }
+      }
+    });
+  res.render('update',{id:req.params.id,path:'../',message:message});
+});
+
+
 router.get('/selling',function(req,res){
   res.render('selling');
 });
@@ -91,11 +124,21 @@ router.get('/product/:id',function(req,res){
   res.render('product',{id:req.params.id,path:'../../'});
 });
 
+router.get('/update/:id',function(req,res){
+  res.render('update',{id:req.params.id,path:'../',message:''});
+});
+
+router.get('/updateupload/:id',function(req,res){
+  res.render('update',{id:req.params.id,path:'../',message:''});
+});
+
 
 router.post('/user/login', controllers.User.getLogin);
 router.post('/user/add', controllers.User.createUser);
 router.get('/user/getAll', controllers.User.getAllUser);
 
+
+router.delete('/image', controllers.Product.deleteImage);
 router.post('/product/getAll', controllers.Product.getAllProducts);
 router.post('/product/getById', controllers.Product.getProductById);
 router.get('/product/getByUserId/:id', controllers.Product.getProductByUserId);

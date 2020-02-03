@@ -69,7 +69,7 @@
                         img=innerData.image[0].path
                     }
                 }
-                htmlData=htmlData+"<div class=\"row\" style=\"padding:10px;border:1px solid #ededed;\">";
+                htmlData=htmlData+"<div class=\"row\" style=\"padding:10px 0px;border:1px solid #ededed;\">";
                 htmlData=htmlData+"<div class=\"col-md-1\">"+innerData.id+"</div>";
 
                 htmlData=htmlData+"<div class=\"col-md-2\"><div class=\"category_product_text\"><h5>"+innerData.name+"</h5></div></div>";
@@ -78,12 +78,13 @@
 
                 htmlData=htmlData+"<div class=\"col-md-5 \"><div class=\"category_product_text\"><img src='"+img+"'/></div></div>";
 
-                htmlData=htmlData+"<div class=\"col-md-1\"><a href=\"/product/"+innerData.id+"\" class=\"gridLink\" >View</a>";
+                htmlData=htmlData+"<div class=\"col-md-2\"><a href=\"/product/"+innerData.id+"\" class=\"gridLink\" >View</a>";
 
                 htmlData=htmlData+"<br/><a href=\"/messages/"+innerData.id+"\" class=\"gridLink\" >Messages</a>";
 
                 if(innerData.status==0){
-                htmlData=htmlData+`<br/><a onclick="UpdateStatus(`+innerData.id+`)" class="gridLink">Update</a>`;
+                htmlData=htmlData+`<br/><a href="/update/`+innerData.id+`" class="gridLink">Update Item</a>`;
+                htmlData=htmlData+`<br/><a onclick="UpdateStatus(`+innerData.id+`)" class="gridLink">Mark As Sold</a>`;
                 }else{
                 htmlData=htmlData+`<br/><b class="gridLink">SOLD</b>`;
                 }
@@ -110,12 +111,4 @@
             });
         }
 </script>
-<style>
-    .gridLink{
-        font-size:14px;
-        color:#2f7dfc;
-        border:1px solid #2f7dfc;
-        padding:10px;
-        line-height:45px;
-    }
-</style>
+
