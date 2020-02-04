@@ -31,7 +31,15 @@ exports.getAllProducts  = (req, res, next) =>{
 	//   })
  //  }
 
-  
+
+exports.searchAllProductsByNameQuery = (req, res, next) =>{
+	var name=req.body.name;
+	services.Product.searchAllProductsByNameQuery(name,(rows) => {
+		res.json({
+			rows
+		  });
+	  })
+  }
   
 exports.getProductByName = (req, res, next) =>{
 	var name=req.body.name;
@@ -150,6 +158,22 @@ exports.addProduct  = (req, callbackData) =>{
 	}
   })
 	};
+
+
+
+exports.deleteProduct  = (req,res, next) =>{
+	services.Product.deleteProduct(
+	  {
+	  id :req.body.id,
+	  user_id :req.body.user_id,
+  }, (callback) => {
+	res.json({
+		"status": "sucess",
+		"id": callback.id
+	  });
+  })
+	};
+
 
 	exports.deleteImage  = (req,res, next) =>{
 	services.Product.deleteImage(

@@ -139,10 +139,12 @@ router.get('/user/getAll', controllers.User.getAllUser);
 
 
 router.delete('/image', controllers.Product.deleteImage);
+router.delete('/product', controllers.Product.deleteProduct);
 router.post('/product/getAll', controllers.Product.getAllProducts);
 router.post('/product/getById', controllers.Product.getProductById);
 router.get('/product/getByUserId/:id', controllers.Product.getProductByUserId);
 router.get('/product/getByName', controllers.Product.getProductByName);
+router.post('/product/searchProduct', controllers.Product.searchAllProductsByNameQuery);
 router.post('/product/add', controllers.Product.addProduct);
 // router.post('/product/getProductBought', controllers.Product.getProductBought);
 router.post('/product/changeProductStatus', controllers.Product.changeProductStatus);
@@ -154,4 +156,9 @@ router.post('/message/send', controllers.Message.send);
 router.post('/orders/getAllOrders', controllers.Order.getAllOrders);
 router.post('/orders/getAllOrderById', controllers.Order.getAllOrderById);
 router.post('/orders/addOrder', controllers.Order.addOrder);
+router.post('/orders/cancel', controllers.Order.cancalOrder);
+
+
+
+
 module.exports = router;

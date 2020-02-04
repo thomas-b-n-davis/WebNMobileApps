@@ -97,6 +97,24 @@
   </div>
 </div>
 
+<hr/>
+<!-- product_list part start-->
+  <section class="product_list best_seller padding_bottom">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="section_tittle text-center">
+            <h2>Similar Items</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="similiar">
+          
+      </div>
+    </div>
+  </section>
+  <!-- product_list part end-->
+
 <!--================End Single Product Area =================-->
 
 <!-- product_list part end-->
@@ -106,6 +124,7 @@ var user=JSON.parse(localStorage.getItem("user"));
 document.getElementById('name').value = user.name;
 document.getElementById('email').value = user.email;
 document.getElementById('number').value = user.telephone;
+
 
 $(".loader,.show_message").hide();
 let receiver_id="";
@@ -120,6 +139,7 @@ let receiver_id="";
         };
 
   $.ajax(settings).done(function (response) {
+  similaritems(response.rows[0].name);
     receiver_id=response.rows[0].user_id;
         document.getElementById('pname').innerHTML = response.rows[0].name;
         document.getElementById('price').innerHTML = "$"+response.rows[0].price;
@@ -295,6 +315,59 @@ let receiver_id="";
               $(".chat").html(chatHistory);
             }
         });
+  }
+
+  function similaritems(name){
+    var settings = {
+          "url": "http://localhost:28090/product/searchProduct/",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({"name":name}),
+        };
+        let htmlData='';
+        $.ajax(settings).done(function (response) {
+            
+            if(response.rows.length>0){
+              for(let i in response.rows){
+
+            let imageObject = response.rows[i].image[0];
+            if(typeof imageObject !== 'undefined') 
+                if(typeof imageObject.path !== 'undefined') {
+                    imgPath=imageObject.path;
+                }
+
+
+              let pid="<%=id %>";
+                //if(String(response.rows[i].id)!==pid){
+                  htmlData +=`<div class="col-lg-3 col-sm-6">
+                    <div class="single_category_product">
+                        <div class="single_category_img">
+                            <a href="/product/`+response.rows[i].id+`">
+                            <img src="../`+imgPath+`" alt="">
+                            </a>
+                            <div class="category_product_text">
+                                <a href="single-product.html"><h5>`+response.rows[i].name+`</h5></a>
+                                <p>$`+response.rows[i].price+`</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                }
+              //}
+            }
+
+            if(htmlData=='')
+              $(".best_seller").hide();
+            else{
+              $("#similiar").html(htmlData);
+              $(".best_seller").show();
+            }
+        });
+
+     
   }
 
   function toggleMessages(){

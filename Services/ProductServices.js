@@ -34,6 +34,26 @@ module.exports.getAllProductsQuery = function (callback) {
 		callback(err);
 	  });
   }
+
+  module.exports.searchAllProductsByNameQuery = function (product_name, callback) {
+	models.Product.findAll({
+		include: {model: Image, as:"image"},
+	  where: {
+		name: {
+		  [Op.like]: '%'+product_name+'%'
+		}
+	  }
+	})
+	  .then(function (related) {
+		//console.log(related[0].role.role);
+		callback(related);
+	  })
+	  .catch(function (err) {
+		//console.log(err);
+		callback(err);
+	  });
+  }
+
   module.exports.getProductByIdQuery = function (product_id, callback) {
 	models.Product.findAll({
 		where: {
@@ -70,7 +90,8 @@ module.exports.getAllProductsQuery = function (callback) {
   module.exports.getProductByUserIdQuery = function (user_id, callback) {
 	models.Product.findAll({
 		where: {
-		  user_id:user_id
+		  user_id:user_id,
+		  status: [0,1, 2,3], 
 		},
 		include: {model: Image, as:"image"}
 	  })
@@ -84,6 +105,23 @@ module.exports.getAllProductsQuery = function (callback) {
 	  });
   }
   
+  module.exports.deleteProduct = function (data,callback) {
+  	models.Product.update(
+  		{
+  			status:4
+  		},{
+		  where: {
+			id: data.id,
+			user_id:data.user_id,
+		  }
+		})
+	  .then(function (related) {
+	  	callback(err);
+	  })
+	  .catch(function (err) {
+		callback(err);
+	  });
+  }
   
   module.exports.addProductQuery = function (product, callback) {
   
