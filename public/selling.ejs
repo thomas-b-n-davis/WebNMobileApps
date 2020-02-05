@@ -69,23 +69,31 @@
                         img=innerData.image[0].path
                     }
                 }
-                htmlData=htmlData+"<div class=\"row\" style=\"padding:10px;border:1px solid #ededed;\">";
-                htmlData=htmlData+"<div class=\"col-md-1\">"+innerData.id+"</div>";
 
-                htmlData=htmlData+"<div class=\"col-md-2\"><div class=\"category_product_text\"><h5>"+innerData.name+"</h5></div></div>";
+                let imgData='';
+                for(let img=0;img<innerData.image.length;img++){
+                    if(typeof innerData.image[img].path !== 'undefined'){console.log(innerData.image[img].path);
+                            imgData+=`<div class="col-md-3" ><img src="`+innerData.image[img].path+`" width="100%" onclick="largeimg('`+innerData.image[img].path+`')"/></div>`;
+                    }
+                }
 
-                htmlData=htmlData+"<div class=\"col-md-2\"><div class=\"category_product_text\"><p>$"+innerData.price+"</p></div></div>";
+                htmlData=htmlData+"<div class=\"row\" style=\"padding:10px 0px;border:1px solid #ededed;\">";
+                htmlData=htmlData+"<div class=\"col-md-4\"><div class=\"category_product_text\"><h3>"+innerData.name+"</h3><br/><h2>$"+innerData.price+"</h2><br/>"+innerData.description+"</div></div>";
 
-                htmlData=htmlData+"<div class=\"col-md-5 \"><div class=\"category_product_text\"><img src='"+img+"'/></div></div>";
+                htmlData=htmlData+"<div class=\"col-md-5 \"><div class=\"category_product_text largeImg\"><img src='"+img+"'/></div><div class=\"imagess row\">"+imgData+"</div></div>";
 
-                htmlData=htmlData+"<div class=\"col-md-1\"><a href=\"/product/"+innerData.id+"\" class=\"gridLink\" >View</a>";
+                htmlData=htmlData+"<div class=\"col-md-2\"><a href=\"/product/"+innerData.id+"\" class=\"gridLink\" >View</a>";
 
                 htmlData=htmlData+"<br/><a href=\"/messages/"+innerData.id+"\" class=\"gridLink\" >Messages</a>";
 
                 if(innerData.status==0){
-                htmlData=htmlData+`<br/><a onclick="UpdateStatus(`+innerData.id+`)" class="gridLink">Update</a>`;
-                }else{
-                htmlData=htmlData+`<br/><b class="gridLink">SOLD</b>`;
+                    htmlData=htmlData+`<br/><a href="/update/`+innerData.id+`" class="gridLink">Update Item</a>`;
+                    htmlData=htmlData+`<br/><a onclick="deleteItem(`+innerData.id+`)" class="gridLink">Delete Item</a>`;
+                }else if(innerData.status==1){
+                    htmlData=htmlData+`<br/><a onclick="cancelOrder(`+innerData.id+`)" class="gridLink">Cancel Item Order</a>`;
+                    htmlData=htmlData+`<br/><a onclick="UpdateStatus(`+innerData.id+`)" class="gridLink">Mark As Sold</a>`;
+                }else if(innerData.status==2){
+                    htmlData=htmlData+`<br/><b class="gridLink">SOLD</b>`;
                 }
 
                 htmlData=htmlData+"</div>";
@@ -93,6 +101,10 @@
             }
             $(".grid").html(htmlData);
         });
+
+        function largeimg(img){
+            $(".largeImg").html("<img src='"+img+"'/>");
+        }
 
         function UpdateStatus(id){
             var update = {
@@ -102,20 +114,46 @@
               "headers": {
                 "Content-Type": "application/json"
               },
-              "data": JSON.stringify({"status":1,"user_id":user.id,"id":id}),
+              "data": JSON.stringify({"status":2,"user_id":user.id,"id":id}),
             };
 
             $.ajax(update).done(function (response) {
                 location.reload();
             });
         }
+
+        function deleteItem(id){
+            var update = {
+              "url": "http://localhost:28090/product",
+              "method": "DELETE",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"user_id":user.id,"id":id}),
+            };
+
+            $.ajax(update).done(function (response) {
+                location.reload();
+            });
+        }
+
+        function cancelOrder(id){
+            var update = {
+              "url": "http://localhost:28090/orders/cancel",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"pid":id}),
+            };
+
+            $.ajax(update).done(function (response) {
+                location.reload();
+            });
+        }
+
+        
 </script>
-<style>
-    .gridLink{
-        font-size:14px;
-        color:#2f7dfc;
-        border:1px solid #2f7dfc;
-        padding:10px;
-        line-height:45px;
-    }
-</style>
+

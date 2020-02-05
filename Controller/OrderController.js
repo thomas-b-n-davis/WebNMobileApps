@@ -17,6 +17,24 @@ exports.getAllOrders  = (req, res, next) =>{
 	  })
   }
   
+
+  
+  exports.cancalOrder  = (req, res, next) =>{
+	var data=req.body.pid;
+	services.Order.cancalOrder(
+	  data, (callback) => {
+	if (callback.status=="failed") {
+	  res.json({
+		"status": "failed",
+		"user": null
+	  })
+	} else {
+	  res.json({
+		callback
+	  })
+	}
+  })
+	};
   
 exports.addOrder  = (req, res, next) =>{
 	var data=req.body;

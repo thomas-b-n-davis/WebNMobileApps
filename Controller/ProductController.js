@@ -31,7 +31,15 @@ exports.getAllProducts  = (req, res, next) =>{
 	//   })
  //  }
 
-  
+
+exports.searchAllProductsByNameQuery = (req, res, next) =>{
+	var name=req.body.name;
+	services.Product.searchAllProductsByNameQuery(name,(rows) => {
+		res.json({
+			rows
+		  });
+	  })
+  }
   
 exports.getProductByName = (req, res, next) =>{
 	var name=req.params.name;
@@ -111,6 +119,28 @@ exports.addProduct  = (req, callbackData) =>{
   })
 	};
 
+
+	exports.updateProduct  = (req, callbackData) =>{
+	var data=req.body;
+	
+	services.Product.updateProductQuery(data, (callback) => {
+	if (callback.status=="failed") {
+	  return callbackData({
+		"status": "failed",
+		"user": null
+	  })
+	} else {
+		return callbackData({
+		"status": "sucess",
+		"id": callback.id
+		
+	  })
+	}
+  })
+	};
+
+	
+
 	exports.addProductImage  = (path,product_id, callbackData) =>{
 	services.Product.addImageQuery(
 	  {
@@ -130,6 +160,36 @@ exports.addProduct  = (req, callbackData) =>{
 	}
   })
 	};
+
+
+
+exports.deleteProduct  = (req,res, next) =>{
+	services.Product.deleteProduct(
+	  {
+	  id :req.body.id,
+	  user_id :req.body.user_id,
+  }, (callback) => {
+	res.json({
+		"status": "sucess",
+		"id": callback.id
+	  });
+  })
+	};
+
+
+	exports.deleteImage  = (req,res, next) =>{
+	services.Product.deleteImage(
+	  {
+	  id :req.body.id,
+  }, (callback) => {
+	res.json({
+		"status": "sucess",
+		"id": callback.id
+	  });
+  })
+	};
+
+	
 
 
 	
