@@ -34,7 +34,8 @@ exports.getAllProducts  = (req, res, next) =>{
   
   
 exports.getProductByName = (req, res, next) =>{
-	var name=req.body.name;
+	var name=req.params.name;
+	console.log(" name = "+name);
 	services.Product.getAllProductsByNameQuery(name,(rows) => {
 		if (!rows || !rows.length) {
 		  res.json({
@@ -51,6 +52,7 @@ exports.getProductByName = (req, res, next) =>{
 
   exports.getProductById = (req, res, next) =>{
 	var id=req.body.id;
+	console.log("This is id "+id);
 	services.Product.getProductByIdQuery(id,(rows) => {
 		let product=rows;
 			  services.Product.getImages(id,(rows) => {
@@ -68,7 +70,7 @@ exports.getProductByName = (req, res, next) =>{
   
   exports.getProductByUserId = (req, res, next) =>{
 	var id=req.params.id;
-	console.log(id);
+	console.log("This is id "+id);
 	services.Product.getProductByUserIdQuery(id,(rows) => {
 		if (!rows || !rows.length) {
 		  res.json({

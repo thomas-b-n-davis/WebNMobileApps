@@ -99,7 +99,7 @@ router.get('/user/getAll', controllers.User.getAllUser);
 router.post('/product/getAll', controllers.Product.getAllProducts);
 router.post('/product/getById', controllers.Product.getProductById);
 router.get('/product/getByUserId/:id', controllers.Product.getProductByUserId);
-router.get('/product/getByName', controllers.Product.getProductByName);
+router.get('/product/getByName/:name', controllers.Product.getProductByName);
 router.post('/product/add', controllers.Product.addProduct);
 // router.post('/product/getProductBought', controllers.Product.getProductBought);
 router.post('/product/changeProductStatus', controllers.Product.changeProductStatus);

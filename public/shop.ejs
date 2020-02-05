@@ -10,8 +10,7 @@
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
                             <p>Seacrh for anything</p>
-
-                            <input type="text" name="search" id="search" style="width:90%;border-radius:40px;height:62px;border:1px solid #fff;padding:0px 30px;"/>
+                            <input  type="text" onkeyup="myFunction()" name="search" id="search" style="width:90%;border-radius:40px;height:62px;border:1px solid #fff;padding:0px 30px;"/>
                         </div>
                     </div>
                 </div>
@@ -25,11 +24,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                    <div id="main">
+
+                    
                     <div class="row" id='data-to-append'>
                       
                     </div>
                 </div>
-                          
+                </div>           
             </div>
         </div>
     </section>
@@ -39,6 +41,9 @@
 <% include ./partials/footer %>
 
 <script>
+
+        let res = ""
+        let counter = 0;
         let innerData = "";
         var settings = {
           "url": "http://localhost:28090/product/getAll",
@@ -51,18 +56,18 @@
 
         $.ajax(settings).done(function (response) {
             let htmlData="";
-            
+            res = response;
             for(var i = 0;i<response.rows.length;i++){
                 innerData = response.rows[i];
                 let imageObject = innerData.image[0];
                 
                 htmlData += `
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-sm-6" id="hallo">
                                 <div class="single_category_product">
                                     <div class="single_category_img">
                                         <a href="/product/`+innerData.id+`"><img src="`+imageObject.path+`" alt=""/></a>  
                                         <div class="category_product_text">
-                                            <a href="/product/`+innerData.id+`"><h5>`+innerData.name+`</h5></a>
+                                            <a href="/product/`+innerData.id+`"><h5 id="name-data">`+innerData.name+`</h5></a>
                                             <p>$`+innerData.price+`</p>
                                         </div>
                                     </div>
@@ -73,9 +78,32 @@
             $("#data-to-append").html(htmlData);
         });
 
-        function saveObject(){
-        alert(innerData.price);
+        function myFunction(){
+            console.log("myFunction");
+            var input = document.getElementById("search");
+            var filter = input.value.toLowerCase();
+            var nodes = document.getElementsByClassName('row');
+          //  console.log("Length of nodes = "+nodes.length);
+            for (i = 0; i < res.rows.length; i++) {
+                console.log("Object of nodes = "+nodes[i]);
+                let data = res.rows[i];
+                console.log("Product name = "+data.name);
+                if (data.name.toLowerCase().includes(filter)) {
+                    
+                    console.log("filter = "+filter);
+                    console.log("if");
+                  
+                    $('#hallo').show(); 
+                } else {
+                    console.log("else");
+                    $('#hallo').hide(); 
+                   
+                }
+              }
         }
+
+
+    
 
 </script>
 
