@@ -62,7 +62,7 @@
                 let imageObject = innerData.image[0];
                 
                 htmlData += `
-                            <div class="col-lg-3 col-sm-6" id="hallo">
+                            <div class="col-lg-3 col-sm-6" id="hallo`+innerData.id+`">
                                 <div class="single_category_product">
                                     <div class="single_category_img">
                                         <a href="/product/`+innerData.id+`"><img src="`+imageObject.path+`" alt=""/></a>  
@@ -79,25 +79,16 @@
         });
 
         function myFunction(){
-            console.log("myFunction");
+           
             var input = document.getElementById("search");
             var filter = input.value.toLowerCase();
             var nodes = document.getElementsByClassName('row');
-          //  console.log("Length of nodes = "+nodes.length);
-            for (i = 0; i < res.rows.length; i++) {
-                console.log("Object of nodes = "+nodes[i]);
-                let data = res.rows[i];
-                console.log("Product name = "+data.name);
-                if (data.name.toLowerCase().includes(filter)) {
-                    
-                    console.log("filter = "+filter);
-                    console.log("if");
-                  
-                    $('#hallo').show(); 
+            for (i = 0; i < res.rows.length; i++) {        
+                let data = res.rows[i];        
+                if (data.name.toLowerCase().includes(filter)) {                 
+                    $('#hallo'+data.id).show(); 
                 } else {
-                    console.log("else");
-                    $('#hallo').hide(); 
-                   
+                    $('#hallo'+data.id).hide(); 
                 }
               }
         }
