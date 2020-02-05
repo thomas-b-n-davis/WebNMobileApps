@@ -27,7 +27,7 @@
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu product_bar_item">
-                                    <h2>Product ID#<%=id %></h2>
+                                    <h2>Product ID#<%=product %></h2>
                                 </div>
                                 <div class="product_top_bar_iner product_bar_item d-flex">
                                        
@@ -150,7 +150,7 @@
               "headers": {
                 "Content-Type": "application/json"
               },
-              "data": JSON.stringify({"user_id":sender_id,"product_id":<%=product %>}),
+              "data": JSON.stringify({"user_id":sender_id,"product_id":<%=product %>,"receiver_id":receiver_id}),
             };
 
             $.ajax(update).done(function (response) {

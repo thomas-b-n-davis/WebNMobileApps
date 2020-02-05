@@ -16,11 +16,26 @@ exports.getAllOrders  = (req, res, next) =>{
 		})
 	  })
   }
+
+exports.createReviews  = (req, res, next) =>{
+	services.Order.createReviews(req.body,(rows) => {
+		res.json({
+			rows
+		})
+	  })
+  }
   
+  exports.getReviews  = (req, res, next) =>{
+	services.Order.getReviews(req.params.id,(rows) => {
+		res.json({
+			rows
+		})
+	  })
+  }
 
   
   exports.cancalOrder  = (req, res, next) =>{
-	var data=req.body.pid;
+	var data=req.body;
 	services.Order.cancalOrder(
 	  data, (callback) => {
 	if (callback.status=="failed") {
@@ -42,6 +57,7 @@ exports.addOrder  = (req, res, next) =>{
 	  {
 	  product_id : data.product_id,
 	  user_id : data.user_id,
+	  receiver_id : data.receiver_id,
   }, (callback) => {
 	if (callback.status=="failed") {
 	  res.json({

@@ -90,6 +90,24 @@ exports.getProductByName = (req, res, next) =>{
 		}
 	  })
   }
+
+  exports.getProductOrders = (req, res, next) =>{
+	var id=req.params.id;
+	console.log(id);
+	services.Product.getProductOrders(id,(rows) => {
+		if (!rows || !rows.length) {
+		  res.json({
+			"status": "failed",
+			"user": null
+		  })
+		} else {
+		  res.json({
+			rows
+		  })
+		}
+	  })
+  }
+  
   
 exports.addProduct  = (req, callbackData) =>{
 	var data=req.body;

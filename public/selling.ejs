@@ -146,7 +146,7 @@
               "headers": {
                 "Content-Type": "application/json"
               },
-              "data": JSON.stringify({"pid":id}),
+              "data": JSON.stringify({"pid":id,"product_id":id,receiver_id:'',sender_id:user.id}),
             };
 
             $.ajax(update).done(function (response) {

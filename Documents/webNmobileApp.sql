@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 28, 2020 at 09:30 PM
+-- Generation Time: Feb 05, 2020 at 03:28 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 7.0.13
 
@@ -47,13 +47,19 @@ INSERT INTO `images` (`id`, `path`, `product_id`, `date`) VALUES
 (12, 'uploads/u_10180991.jpg', 26, '2020-01-28 15:13:18'),
 (13, 'uploads/u_10180991.jpg', 34, '2020-01-28 16:16:57'),
 (14, 'uploads/u_10180991.jpg', 35, '2020-01-28 16:33:41'),
-(15, 'uploads/u_10180991.jpg', 36, '2020-01-28 17:06:31'),
-(16, 'uploads/big4.jpg', 36, '2020-01-28 17:06:31'),
 (17, 'uploads/big4 (1).jpg', 37, '2020-01-28 20:18:18'),
 (18, 'uploads/u_10180991.jpg', 37, '2020-01-28 20:18:18'),
 (19, 'uploads/big4 copy.jpg', 37, '2020-01-28 20:18:18'),
 (20, 'uploads/u_10180991 (1).jpg', 37, '2020-01-28 20:18:18'),
-(21, 'uploads/big4.jpg', 37, '2020-01-28 20:18:18');
+(21, 'uploads/big4.jpg', 37, '2020-01-28 20:18:18'),
+(26, 'uploads/61Cc2vR3OpL._SL1500_.jpg', 38, '2020-02-03 22:18:24'),
+(27, 'uploads/61g28-WMXYL._SL1500_.jpg', 38, '2020-02-03 22:18:24'),
+(28, 'uploads/61vaMN815iL._SL1500_.jpg', 38, '2020-02-03 22:18:24'),
+(29, 'uploads/71MVVJfWNVL._SL1500_.jpg', 38, '2020-02-03 22:18:24'),
+(30, 'uploads/61g28-WMXYL._SL1500_.jpg', 39, '2020-02-04 11:38:19'),
+(31, 'uploads/71MVVJfWNVL._SL1500_.jpg', 39, '2020-02-04 11:38:19'),
+(32, 'uploads/61Cc2vR3OpL._SL1500_.jpg', 39, '2020-02-04 11:38:19'),
+(33, 'uploads/61vaMN815iL._SL1500_.jpg', 39, '2020-02-04 11:38:19');
 
 -- --------------------------------------------------------
 
@@ -92,7 +98,17 @@ INSERT INTO `messages` (`id`, `product_id`, `message`, `sender_id`, `receiver_id
 (21, 35, '<br/>exesdavis@gmail.com<br/>+4915211632805<br/>I want to buy this item', 7, 7, '2020-01-28 16:45:10'),
 (22, 35, 'i have changed by my mind about this', 7, 7, '2020-01-28 16:45:41'),
 (23, 35, 'sorry i already have someone to buy this item', 1, 7, '2020-01-28 16:47:25'),
-(25, 36, 'thomas<br/>exesdavis@gmail.com<br/>0202009791<br/>i am interested in buying this', 7, 8, '2020-01-28 17:17:42');
+(25, 36, 'thomas<br/>exesdavis@gmail.com<br/>0202009791<br/>i am interested in buying this', 7, 8, '2020-01-28 17:17:42'),
+(26, 39, 'Mike<br/>thomas.b.n.davis@outlook.com<br/>+4915211632805<br/>i want to buy this', 8, 9, '2020-02-04 12:30:02'),
+(33, 39, 'The seller has accepted your request to buy this item', 9, 8, '2020-02-05 12:13:30'),
+(34, 39, 'The seller has accepted your request to buy this item', 9, 8, '2020-02-05 12:24:53'),
+(35, 39, 'The seller has accepted your request to buy this item', 9, 8, '2020-02-05 12:26:23'),
+(36, 39, 'The seller has accepted your request to buy this item', 9, 8, '2020-02-05 12:32:48'),
+(37, 39, 'The seller has accepted your request to buy this item', 9, 8, '2020-02-05 12:34:37'),
+(38, 39, 'Sorry the user has cancelled your purchase order', 9, 8, '2020-02-05 12:34:55'),
+(39, 39, 'The seller has accepted your request to buy this item', 9, 8, '2020-02-05 12:37:20'),
+(40, 39, 'Sorry the user has cancelled your purchase order', 9, 8, '2020-02-05 12:37:49'),
+(41, 39, 'The seller has accepted your request to buy this item', 9, 8, '2020-02-05 12:38:19');
 
 -- --------------------------------------------------------
 
@@ -113,7 +129,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `product_id`, `user_id`, `timestamp`, `status`) VALUES
-(4, 21, 7, '2020-01-28 15:30:28', 0);
+(4, 21, 8, '2020-02-05 12:57:32', 0),
+(23, 39, 8, '2020-02-05 12:38:19', 0);
 
 -- --------------------------------------------------------
 
@@ -137,8 +154,30 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `user_id`, `name`, `price`, `description`, `date_uploaded`, `status`) VALUES
 (35, 7, 'Used Laptop', 10, 'Acer Aspire 5 A515-43-R19L comes with these high level specs: AMD Ryzen 3 3200U Dual-Core Processor 2.6GHz with Precision Boost up to 3.5GHz (Up to 4MB L3 Cache), Windows 10 in S mode, 15.6" Full HD (1920 x 1080) widescreen LED-backlit IPS Display, AMD Radeon Vega 3 Mobile Graphics, 4GB DDR4 Memory, 128GB PCIe NVMe SSD, True Harmony Technology, Two Built-in Stereo Speakers, Acer Purified.Voice Technology with Two Built-in Microphones, 802.11ac WiFi featuring 2x2 MIMO technology (Dual-Band 2.4GHz and 5GHz), 10/100/1000 Gigabit Ethernet LAN (RJ-45 port), Bluetooth 4.0, Back-lit Keyboard, HD Webcam (1280 x 720), 1 - USB 3.1 Gen 1 Port, 2 - USB 2.0 Ports, 1 - HDMI Port with HDCP support, Lithium-Ion Battery, Up to 7.5-hours Battery Life, 3.97 lbs. | 1.8 kg (system unit only) (NX.HG8AA.001)', '2020-01-28 16:33:41', 0),
-(36, 8, 'Slighty used laptop', 120, 'Acer Aspire 5 A515-43-R19L comes with these high level specs: AMD Ryzen 3 3200U Dual-Core Processor 2.6GHz with Precision Boost up to 3.5GHz (Up to 4MB L3 Cache), Windows 10 in S mode, 15.6" Full HD (1920 x 1080) widescreen LED-backlit IPS Display, AMD Radeon Vega 3 Mobile Graphics, 4GB DDR4 Memory, 128GB PCIe NVMe SSD, True Harmony Technology, Two Built-in Stereo Speakers, Acer Purified.Voice Technology with Two Built-in Microphones, 802.11ac WiFi featuring 2x2 MIMO technology (Dual-Band 2.4GHz and 5GHz), 10/100/1000 Gigabit Ethernet LAN (RJ-45 port), Bluetooth 4.0, Back-lit Keyboard, HD Webcam (1280 x 720), 1 - USB 3.1 Gen 1 Port, 2 - USB 2.0 Ports, 1 - HDMI Port with HDCP support, Lithium-Ion Battery, Up to 7.5-hours Battery Life, 3.97 lbs. | 1.8 kg (system unit only) (NX.HG8AA.001)', '2020-01-28 17:06:31', 0),
-(37, 9, 'Used Lenovo', 89, 'Acer Aspire 5 A515-43-R19L comes with these high level specs: AMD Ryzen 3 3200U Dual-Core Processor 2.6GHz with Precision Boost up to 3.5GHz (Up to 4MB L3 Cache), Windows 10 in S mode, 15.6" Full HD (1920 x 1080) widescreen LED-backlit IPS Display, AMD Radeon Vega 3 Mobile Graphics, 4GB DDR4 Memory, 128GB PCIe NVMe SSD, True Harmony Technology, Two Built-in Stereo Speakers, Acer Purified.Voice Technology with Two Built-in Microphones, 802.11ac WiFi featuring 2x2 MIMO technology (Dual-Band 2.4GHz and 5GHz), 10/100/1000 Gigabit Ethernet LAN (RJ-45 port), Bluetooth 4.0, Back-lit Keyboard, HD Webcam (1280 x 720), 1 - USB 3.1 Gen 1 Port, 2 - USB 2.0 Ports, 1 - HDMI Port with HDCP support, Lithium-Ion Battery, Up to 7.5-hours Battery Life, 3.97 lbs. | 1.8 kg (system unit only) (NX.HG8AA.001)', '2020-01-28 20:18:18', 0);
+(37, 9, 'Used Lenovo', 89, 'Acer Aspire 5 A515-43-R19L comes with these high level specs: AMD Ryzen 3 3200U Dual-Core Processor 2.6GHz with Precision Boost up to 3.5GHz (Up to 4MB L3 Cache), Windows 10 in S mode, 15.6" Full HD (1920 x 1080) widescreen LED-backlit IPS Display, AMD Radeon Vega 3 Mobile Graphics, 4GB DDR4 Memory, 128GB PCIe NVMe SSD, True Harmony Technology, Two Built-in Stereo Speakers, Acer Purified.Voice Technology with Two Built-in Microphones, 802.11ac WiFi featuring 2x2 MIMO technology (Dual-Band 2.4GHz and 5GHz), 10/100/1000 Gigabit Ethernet LAN (RJ-45 port), Bluetooth 4.0, Back-lit Keyboard, HD Webcam (1280 x 720), 1 - USB 3.1 Gen 1 Port, 2 - USB 2.0 Ports, 1 - HDMI Port with HDCP support, Lithium-Ion Battery, Up to 7.5-hours Battery Life, 3.97 lbs. | 1.8 kg (system unit only) (NX.HG8AA.001)', '2020-01-28 20:18:18', 0),
+(39, 9, 'HP - 21.5 Inch - Silver / Black', 150, 'Built from lightweight, high-strength metal with a matte finish and high-polished resin, this ultra-slim display brings home a contemporary look and feel without the premium price tag\nWith its vivid IPS panel, this micro-edge display delivers ultra-wide viewing angles and crisp, clear picture quality; it''s an expansive viewing experience, ideal for dual display setups\nExperience the sharp, clear difference FHD resolution brings to all your content and thanks to AMD Free Sync, PC gaming is free of blur and lag; Scan range: Horizontal: 30 to 86 KHz, Vertical: 48 to 75 Hz\nNo matter where you stand, an HP IPS monitor delivers clear, vivid images; IPS technology ensures image accuracy and consistency across the ultra-wide viewing;Mounting_type:No vesa mounting\n2 years warranty', '2020-02-05 14:23:51', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `review` text NOT NULL,
+  `seller_id` int(11) NOT NULL,
+  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `review`, `seller_id`, `timestamp`) VALUES
+(13, 39, 8, 'test', 9, '2020-02-05 14:23:51');
 
 -- --------------------------------------------------------
 
@@ -200,6 +239,12 @@ ALTER TABLE `products`
   ADD KEY `user_id` (`user_id`,`price`,`date_uploaded`,`status`);
 
 --
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -215,22 +260,27 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `users`
 --

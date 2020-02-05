@@ -27,7 +27,7 @@
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu product_bar_item">
-                                    <h2>Bought Items</h2>
+                                    <h2>Selling Items</h2>
                                 </div>
                                 <div class="product_top_bar_iner product_bar_item d-flex">
                                     <a href="/upload">Upload An Item</a>    
@@ -50,7 +50,7 @@
 <script>
         var user=JSON.parse(localStorage.getItem("user"));
         var settings = {
-          "url": "http://localhost:28090/product/getByUserId/"+user.id,
+          "url": "http://localhost:28090/product/orders/"+user.id,
           "method": "GET",
           "timeout": 0,
           "headers": {
@@ -62,49 +62,92 @@
             let htmlData="";
             for(var data in response.rows){
                 let innerData=response.rows[data];
-                htmlData=htmlData+"<div class=\"row\" style=\"padding:10px;border:1px solid #ededed;\">";
-                htmlData=htmlData+"<div class=\"col-md-1\">"+innerData.id+"</div>";
-
-                htmlData=htmlData+"<div class=\"col-md-2\"><div class=\"category_product_text\"><h5>"+innerData.name+"</h5></div></div>";
-
-                htmlData=htmlData+"<div class=\"col-md-2\"><div class=\"category_product_text\"><p>$"+innerData.price+"</p></div></div>";
-
-                htmlData=htmlData+"<div class=\"col-md-4\"><div class=\"category_product_text\"><p>"+innerData.description+"</p></div></div>";
-
-                htmlData=htmlData+"<div class=\"col-md-1\"><div class=\"category_product_text\"><a href=\"/product/"+innerData.id+"\" class=\"\" >View</a></div></div>";
-
-                htmlData=htmlData+"<div class=\"col-md-1\"><a href=\"/messages/"+innerData.id+"\" class=\"\" >Messages</a></div>";
-
-                if(innerData.status==0){
-                htmlData=htmlData+`<div class="col-md-1"><b class="">PENDING</b></div>`;
-                }else{
-                htmlData=htmlData+`<div class="col-md-1"><b class="">SOLD</b></div>`;
+                let img="";
+                console.log(innerData);
+                if(typeof innerData.image !== 'undefined'){
+                    if(typeof innerData.image[0].path !== 'undefined'){
+                        img=innerData.image[0].path
+                    }
                 }
 
+                let imgData='';
+                for(let img=0;img<innerData.image.length;img++){
+                    if(typeof innerData.image[img].path !== 'undefined'){console.log(innerData.image[img].path);
+                            imgData+=`<div class="col-md-3" ><img src="`+innerData.image[img].path+`" width="100%" onclick="largeimg('`+innerData.image[img].path+`')"/></div>`;
+                    }
+                }
+
+                htmlData=htmlData+"<div class=\"row\" style=\"padding:10px 0px;border:1px solid #ededed;\">";
+                htmlData=htmlData+"<div class=\"col-md-4\"><div class=\"category_product_text\"><h3>"+innerData.name+"</h3><br/><h2>$"+innerData.price+"</h2><br/>"+innerData.description+"</div></div>";
+
+                htmlData=htmlData+"<div class=\"col-md-5 \"><div class=\"category_product_text largeImg\"><img src='"+img+"'/></div><div class=\"imagess row\">"+imgData+"</div></div>";
+
+                htmlData=htmlData+"<div class=\"col-md-2\"><a href=\"/product/"+innerData.id+"\" class=\"gridLink\" >View</a>";
+
+                if(innerData.status==1){
+                    htmlData=htmlData+`<br/><a onclick="cancelOrder(`+innerData.id+`)" class="gridLink">Cancel Item Order</a>`;
+                    htmlData=htmlData+`<br/><a onclick="UpdateStatus(`+innerData.id+`)" class="gridLink">Mark As Sold</a>`;
+                }else if(innerData.status==2){
+                    htmlData=htmlData+`<br/><b class="gridLink">Completed</b>`;
+                }
+
+                htmlData=htmlData+"</div>";
                 htmlData=htmlData+"</div>";
             }
             $(".grid").html(htmlData);
         });
 
+        function largeimg(img){
+            $(".largeImg").html("<img src='"+img+"'/>");
+        }
+
+        function UpdateStatus(id){
+            var update = {
+              "url": "http://localhost:28090/product/changeProductStatus/",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"status":2,"user_id":user.id,"id":id}),
+            };
+
+            $.ajax(update).done(function (response) {
+                location.reload();
+            });
+        }
+
+        function deleteItem(id){
+            var update = {
+              "url": "http://localhost:28090/product",
+              "method": "DELETE",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"user_id":user.id,"id":id}),
+            };
+
+            $.ajax(update).done(function (response) {
+                location.reload();
+            });
+        }
+
+        function cancelOrder(id){
+            var update = {
+              "url": "http://localhost:28090/orders/cancel",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"pid":id,"product_id":id,receiver_id:'',sender_id:user.id}),
+            };
+
+            $.ajax(update).done(function (response) {
+                location.reload();
+            });
+        }
+
+        
 </script>
-<style>
-    .grid{
-        .grid{
-        border:1px solid #ccc;
-    }
-    }
-    .grid div{ 
-        padding:10;
-        margin:10;
-        line-height:32px;
-    }
-    .grid div a{
-        font-size:10px;
-        color:#999;
-        background:#2f7dfc;
-        height:32px;
-        padding:10px;
-        color:#fff;
-        margin-top:15px;
-    }
-</style>
