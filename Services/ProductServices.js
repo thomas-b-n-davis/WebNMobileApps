@@ -5,7 +5,10 @@ var Image=require("../model/ImageModel")
 
 module.exports.getAllProductsQuery = function (callback) {
 	models.Product.findAll({
-		include: {model: Image, as:"image"}
+		include: {model: Image, as:"image"},
+		where: {
+			status:0
+	  	}
 	  })
 	  .then(function (related) {
 		//console.log(related[0].role.role);
@@ -104,6 +107,39 @@ module.exports.getAllProductsQuery = function (callback) {
 		callback(err);
 	  });
   }
+
+module.exports.getProductOrders = function (user_id, callback) {
+	models.Order.findAll({
+		where: {
+		  user_id:user_id, 
+		}
+	  })
+	  .then(function (related) {
+	  	let inCon=[];
+	  	for(let i in related){
+	  		inCon.push(related[i].dataValues.product_id);
+	  	}
+		models.Product.findAll({
+			where: {
+			  id: inCon, 
+			},
+			include: {model: Image, as:"image"}
+		  })
+		  .then(function (related) {
+			//console.log(related[0].role.role);
+			callback(related);
+		  })
+		  .catch(function (err) {
+			//console.log(err);
+			callback(err);
+		  });
+	  })
+	  .catch(function (err) {
+		//console.log(err);
+		callback(err);
+	  });
+  }
+  
   
   module.exports.deleteProduct = function (data,callback) {
   	models.Product.update(

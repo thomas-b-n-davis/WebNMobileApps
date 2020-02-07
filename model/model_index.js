@@ -3,5 +3,6 @@ module.exports = {
     Order: require('./OrderModel'),
     Product: require('./ProductModel'),
     Message: require('./MessageModel'),
-    Image: require('./ImageModel')
+    Image: require('./ImageModel'),
+    Reviews:require('./ReviewModel')
   };

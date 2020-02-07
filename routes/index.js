@@ -143,9 +143,14 @@ router.delete('/product', controllers.Product.deleteProduct);
 router.post('/product/getAll', controllers.Product.getAllProducts);
 router.post('/product/getById', controllers.Product.getProductById);
 router.get('/product/getByUserId/:id', controllers.Product.getProductByUserId);
+<<<<<<< HEAD
 router.get('/product/getByName/:name', controllers.Product.getProductByName);
 router.get('/product/getByName', controllers.Product.getProductByName);
 router.post('/product/searchProduct', controllers.Product.searchAllProductsByNameQuery);
+=======
+router.get('/product/orders/:id', controllers.Product.getProductOrders);
+router.get('/product/getByName', controllers.Product.getProductByName);
+>>>>>>> 95297b0326b89848d9d11e233a60df088797359d
 router.post('/product/add', controllers.Product.addProduct);
 // router.post('/product/getProductBought', controllers.Product.getProductBought);
 router.post('/product/changeProductStatus', controllers.Product.changeProductStatus);
@@ -158,6 +163,8 @@ router.post('/orders/getAllOrders', controllers.Order.getAllOrders);
 router.post('/orders/getAllOrderById', controllers.Order.getAllOrderById);
 router.post('/orders/addOrder', controllers.Order.addOrder);
 router.post('/orders/cancel', controllers.Order.cancalOrder);
+router.post('/reviews', controllers.Order.createReviews);
+router.get('/reviews/:id', controllers.Order.getReviews);
 
 
 

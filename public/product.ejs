@@ -32,6 +32,10 @@
           <h2 id="price"></h2>
           <p id="description">
           </p>
+
+          <a onclick="toggleReview()"><b>Seller reviews</b></a>
+          <div class="reviewBox" style="height:200px;overflow:auto;"></div>
+          <br/><br/>
           <div class="review_box">
             <a class="show_message" onclick="toggleMessages()"><b>Show messages</b></a>
             <div class="oldchat">
@@ -90,8 +94,30 @@
                 <img src="../../img/loading.gif" class="loader"/>
               </div>
             </form>
+
           </div>
+
+
         </div>
+
+        
+        <form class="row review_form_" action="" method="post" novalidate="novalidate">
+            &nbsp;&nbsp;&nbsp;&nbsp;<h4>Post You Review</h4>
+            <div class="col-md-12">
+            <small class="response_msg_" style="color:#f00;"></small>
+            </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <textarea class="form-control" id="review_message" rows="1" placeholder="Review" style="height:120px;"></textarea>
+                </div>
+              </div>
+              <div class="col-md-12 text-right">
+                <button onclick="sendReview()" type="button" value="submit" class="btn_3 sendBtn">
+                  Submit Review
+                </button>
+                <img src="../../img/loading.gif" class="loader"/>
+              </div>
+            </form>
       </div>
     </div>
   </div>
@@ -126,7 +152,7 @@ document.getElementById('email').value = user.email;
 document.getElementById('number').value = user.telephone;
 
 
-$(".loader,.show_message").hide();
+$(".loader,.show_message,.review_form_,.reviewBox").hide();
 let receiver_id="";
   var settings = {
           "url": "http://localhost:28090/product/getById/",
@@ -145,7 +171,7 @@ let receiver_id="";
         document.getElementById('price').innerHTML = "$"+response.rows[0].price;
         document.getElementById('description').innerHTML = response.rows[0].description;
 
-        
+        getReviews();
 
         if(response.messages.length==0){
           $(".oldchat").hide();
@@ -186,6 +212,16 @@ let receiver_id="";
           $(".oldchat").hide();
           $(".show_message").hide();
           $(".contact_form").hide();
+        }
+
+
+        if(response.rows[0].status===2){
+        
+          $(".contact_form").hide();
+          $(".review_box").hide();
+          $(".review_form_").show();
+        }else if(response.rows[0].status===3){
+          $(".contact_form,.review_box,.review_form_").hide();
         }
     });
 
@@ -259,6 +295,25 @@ let receiver_id="";
           }
   }
 
+  function sendReview(){
+  if($("#review_message").val()==""){
+    }else{
+            var payload = {
+              "url": "http://localhost:28090/reviews",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({"seller_id":receiver_id,"review":$("#review_message").val(),"user_id":user.id,"product_id":<%=id %>}),
+            };
+
+            $.ajax(payload).done(function (response) {
+                location.reload();
+            });
+    }
+  }
+
   function sendReply(){
   if($("#message").val()==""){
       $(".response_msg__").html("Contact number is mandatory");
@@ -317,9 +372,36 @@ let receiver_id="";
         });
   }
 
+
+  function getReviews(){
+     var settings = {
+          "url": "http://localhost:28090/reviews/"+receiver_id,
+          "method": "GET",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+        };
+
+        $.ajax(settings).done(function (response) {
+        console.log(response);
+            if(response.rows.length==0){
+              $(".reviewBox").hide();
+            }else{
+              let chatHistory='';
+              for (var i = 0; i < response.rows.length; i++) {
+                chatHistory+=`<div style="width:100%;borderBottom:1px solid #ccc;padding:5px 0px;margin:5px;">`+response.rows[i].review+`<br/><small>`+response.rows[i].timestamp+`</small></div>`;
+              }
+
+              $(".reviewBox").html(chatHistory);
+            }
+        });
+  }
+  
+
   function similaritems(name){
     var settings = {
-          "url": "http://localhost:28090/product/searchProduct/",
+          "url": "http://localhost:28090/product/getAll",
           "method": "POST",
           "timeout": 0,
           "headers": {
@@ -330,41 +412,55 @@ let receiver_id="";
         let htmlData='';
         $.ajax(settings).done(function (response) {
             
+            let htmlData='';
             if(response.rows.length>0){
-              for(let i in response.rows){
 
-            let imageObject = response.rows[i].image[0];
-            if(typeof imageObject !== 'undefined') 
-                if(typeof imageObject.path !== 'undefined') {
-                    imgPath=imageObject.path;
-                }
+            	let stop=4;
+            	if(response.rows.length<4){
+            		stop=response.rows.length;
+            	}
+              for(let i=0;i<stop; i++){
+              	console.log("=>"+response.rows[i].name);
+	            let imageObject = response.rows[i].image[0];
+	            if(typeof imageObject !== 'undefined') 
+	                if(typeof imageObject.path !== 'undefined') {
+	                    imgPath=imageObject.path;
+	                }
 
+	                let pid="<%=id %>";
+	                if(String(response.rows[i].id)!==pid){
+	                	let search=false;
 
-              let pid="<%=id %>";
-                //if(String(response.rows[i].id)!==pid){
-                  htmlData +=`<div class="col-lg-3 col-sm-6">
-                    <div class="single_category_product">
-                        <div class="single_category_img">
-                            <a href="/product/`+response.rows[i].id+`">
-                            <img src="../`+imgPath+`" alt="">
-                            </a>
-                            <div class="category_product_text">
-                                <a href="single-product.html"><h5>`+response.rows[i].name+`</h5></a>
-                                <p>$`+response.rows[i].price+`</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-                }
-              //}
+	                	let data=name.split(" ");
+	                	for(let a in data){
+	                		console.log(response.rows[i].name+'<-->'+(data[a]));
+	                		if(response.rows[i].name.includes(data[a])){
+	                			search=true;
+	                		}
+	                	}
+	                	if(search==true){
+	                  	htmlData +=`<div class="col-lg-3 col-sm-6">
+		                    <div class="single_category_product">
+		                        <div class="single_category_img">
+		                            <a href="/product/`+response.rows[i].id+`">
+		                            <img src="../`+imgPath+`" alt="">
+		                            </a>
+		                            <div class="category_product_text">
+		                                <a href="single-product.html"><h5>`+response.rows[i].name+`</h5></a>
+		                                <p>$`+response.rows[i].price+`</p>
+		                            </div>
+		                        </div>
+		                    </div>
+	                	</div>`;
+	                	}
+	                }
+	              
+	            }
             }
 
-            if(htmlData=='')
-              $(".best_seller").hide();
-            else{
+            
               $("#similiar").html(htmlData);
               $(".best_seller").show();
-            }
         });
 
      
@@ -372,6 +468,10 @@ let receiver_id="";
 
   function toggleMessages(){
     $(".oldchat").slideToggle();
+  }
+
+  function toggleReview(){
+    $(".reviewBox").slideToggle();
   }
 
 </script>
