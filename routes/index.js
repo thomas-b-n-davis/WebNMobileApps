@@ -143,14 +143,14 @@ router.delete('/product', controllers.Product.deleteProduct);
 router.post('/product/getAll', controllers.Product.getAllProducts);
 router.post('/product/getById', controllers.Product.getProductById);
 router.get('/product/getByUserId/:id', controllers.Product.getProductByUserId);
-<<<<<<< HEAD
+// <<<<<<< HEAD
 router.get('/product/getByName/:name', controllers.Product.getProductByName);
 router.get('/product/getByName', controllers.Product.getProductByName);
 router.post('/product/searchProduct', controllers.Product.searchAllProductsByNameQuery);
-=======
+// =======
 router.get('/product/orders/:id', controllers.Product.getProductOrders);
 router.get('/product/getByName', controllers.Product.getProductByName);
->>>>>>> 95297b0326b89848d9d11e233a60df088797359d
+// >>>>>>> 95297b0326b89848d9d11e233a60df088797359d
 router.post('/product/add', controllers.Product.addProduct);
 // router.post('/product/getProductBought', controllers.Product.getProductBought);
 router.post('/product/changeProductStatus', controllers.Product.changeProductStatus);
