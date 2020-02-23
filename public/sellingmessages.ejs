@@ -85,8 +85,9 @@
         $.ajax(settings).done(function (response) {
             let htmlData="";
             for(var data in response.rows){
+            
                 let innerData=response.rows[data];
-                
+                console.log(innerData);
                 htmlData=htmlData+"<div class=\"row\" style=\"padding:10px;border:1px solid #ededed;\">";
                 htmlData=htmlData+"<div class=\"col-md-1\">"+innerData.id+"</div>";
 

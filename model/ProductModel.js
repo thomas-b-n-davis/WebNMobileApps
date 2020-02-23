@@ -20,6 +20,10 @@ var Product = sequelize.define('products', {
     type: Sequelize.TEXT,
     allowNull: false
   },
+  category: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
   price: {
     type: Sequelize.STRING(20),
     allowNull: false

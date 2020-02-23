@@ -116,6 +116,10 @@ router.get('/register',function(req,res){
   res.render('register');
 });
 
+router.get('/about',function(req,res){
+  res.render('about');
+});
+
 router.get('/shop',function(req,res){
   res.render('shop');
 });

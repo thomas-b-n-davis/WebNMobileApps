@@ -117,6 +117,7 @@ exports.addProduct  = (req, callbackData) =>{
 	services.Product.addProductQuery({
 	  name : data.name,
 	  price : data.price,
+	  category : data.category,
 	  description : data.description,
 	  date_uploaded : data.date_uploaded,
 	  status : data.status,

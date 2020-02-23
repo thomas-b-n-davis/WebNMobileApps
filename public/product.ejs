@@ -102,7 +102,7 @@
 
         
         <form class="row review_form_" action="" method="post" novalidate="novalidate">
-            &nbsp;&nbsp;&nbsp;&nbsp;<h4>Post You Review</h4>
+            &nbsp;&nbsp;&nbsp;&nbsp;<h4>Post Your Review</h4>
             <div class="col-md-12">
             <small class="response_msg_" style="color:#f00;"></small>
             </div>
@@ -147,13 +147,23 @@
 <% include ./partials/deep_footer %>
 <script>
 var user=JSON.parse(localStorage.getItem("user"));
-document.getElementById('name').value = user.name;
-document.getElementById('email').value = user.email;
-document.getElementById('number').value = user.telephone;
-
+let user_id=0;
 
 $(".loader,.show_message,.review_form_,.reviewBox").hide();
+if(user !== null){
+  document.getElementById('name').value = user.name;
+  document.getElementById('email').value = user.email;
+  document.getElementById('number').value = user.telephone;
+  user_id=user.id;
+}else{
+  
+}
+
+
+
 let receiver_id="";
+
+console.log(user_id);
   var settings = {
           "url": "http://localhost:28090/product/getById/",
           "method": "POST",
@@ -161,7 +171,7 @@ let receiver_id="";
           "headers": {
             "Content-Type": "application/json"
           },
-          "data": JSON.stringify({"user_id":user.id,"id":<%=id %>}),
+          "data": JSON.stringify({"user_id":user_id,"id":<%=id %>}),
         };
 
   $.ajax(settings).done(function (response) {
@@ -207,7 +217,7 @@ let receiver_id="";
         loading()
 
         
-        if(response.rows[0].user_id===user.id){
+        if(response.rows[0].user_id===user_id){
         
           $(".oldchat").hide();
           $(".show_message").hide();
@@ -215,7 +225,7 @@ let receiver_id="";
         }
 
 
-        if(response.rows[0].status===2){
+        if(response.rows[0].status===2 && user_id>0){
         
           $(".contact_form").hide();
           $(".review_box").hide();
@@ -223,6 +233,11 @@ let receiver_id="";
         }else if(response.rows[0].status===3){
           $(".contact_form,.review_box,.review_form_").hide();
         }
+
+        if(user_id===0){
+          $(".contact_form").hide();
+        }
+
     });
 
   function loading(){

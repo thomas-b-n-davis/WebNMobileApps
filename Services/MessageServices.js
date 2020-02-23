@@ -13,8 +13,8 @@ module.exports.getAllMessagesQuery = function (product_id, sender_id, callback) 
 module.exports.getAllCommunicationsQuery = function(user_id,product_id,callback){
   var statement = "SELECT messages.message,messages.timestamp,users.id,users.name\
   FROM messages,users \
-  where product_id="+product_id+" AND ( messages.sender_id=users.id and messages.receiver_id="+user_id+") \
-  or (messages.sender_id="+user_id+" and messages.receiver_id=users.id )\
+  where product_id="+product_id+" AND (( messages.sender_id=users.id and messages.receiver_id="+user_id+") \
+  or (messages.sender_id="+user_id+" and messages.receiver_id=users.id ))\
   GROUP BY users.id;";
       sequelize.query(statement).spread((data) => {
           callback(data);

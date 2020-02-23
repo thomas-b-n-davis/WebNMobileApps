@@ -93,10 +93,10 @@
             let htmlData="";
             for(var data in response.rows){
                 let innerData=response.rows[data];
-                receiver_id=innerData.receiver_id;
+                if(receiver_id==="" && innerData.sender_id!==user.id)
+                receiver_id=innerData.sender_id;
+                
                 sender_id=innerData.sender_id;
-
-
                 
                 htmlData=htmlData+"<div class=\"row\">";
 
@@ -134,7 +134,7 @@
             console.log(response.status);
                 $(".loader").hide();
                 $(".sendMsg").show();
-
+                $("#message").val("");
                 messages();
             });
         }
@@ -177,6 +177,7 @@
 
             $.ajax(update).done(function (response) {
                 if(response.rows.length==0){
+
                     $(".orderMsg").show();
                 }
             });
