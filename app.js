@@ -8,12 +8,21 @@ let session=require('express-session');
 var index = require('./routes/index');
 var partials      = require('express-partials');
 
+
 var app = express();
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true
 }));
+
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

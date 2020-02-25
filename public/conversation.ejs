@@ -86,10 +86,11 @@
           "headers": {
             "Content-Type": "application/json"
           },
-          "data": JSON.stringify({"user_id":user.id,"product_id":<%=product %>}),
+          "data": JSON.stringify({"user_id":<%=id %>,"product_id":<%=product %>}),
         };
 
         $.ajax(settings).done(function (response) {
+        console.log(response);
             let htmlData="";
             for(var data in response.rows){
                 let innerData=response.rows[data];

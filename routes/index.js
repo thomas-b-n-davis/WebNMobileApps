@@ -65,30 +65,35 @@ router.post('/updateupload/:id',function(req,res){
   req.body.pid=req.params.id;
   controllers.Product.updateProduct(req,function(result){
     
-      if(Array.isArray(req.files.file)==false){
-        console.log(req.files);
-        req.files.file.mv(__dirname + '/../uploads/' + req.files.file['name'], function(err) {
-            if (err) {}else{
-              controllers.Product.addProductImage('uploads/' + req.files.file['name'],req.body.pid,function(result){});
-            }
-          });
-      }else{
+      if(req.files!==null){
+        if(Array.isArray(req.files.file)==false){
+          console.log(req.files);
+          req.files.file.mv(__dirname + '/../uploads/' + req.files.file['name'], function(err) {
+              if (err) {}else{
+                controllers.Product.addProductImage('uploads/' + req.files.file['name'],req.body.pid,function(result){});
+              }
+            });
+        }else{
 
-        for(let n=0;n<req.files.file.length;n++){
-          console.log("Files : "+req.files.file[n]['name']);
-          req.files.file[n].mv(__dirname + '/../uploads/' + req.files.file[n]['name'], function(err) {
-            if (err) {
-              console.log(err);
-              // return res.status(500).send(err);
-            }else{
-              console.log("uploaded::"+req.files.file[n]['name']);
-              controllers.Product.addProductImage('uploads/' + req.files.file[n]['name'],req.body.pid,function(result){});
-            }
-          });
+          for(let n=0;n<req.files.file.length;n++){
+            console.log("Files : "+req.files.file[n]['name']);
+            req.files.file[n].mv(__dirname + '/../uploads/' + req.files.file[n]['name'], function(err) {
+              if (err) {
+                console.log(err);
+                // return res.status(500).send(err);
+              }else{
+                console.log("uploaded::"+req.files.file[n]['name']);
+                controllers.Product.addProductImage('uploads/' + req.files.file[n]['name'],req.body.pid,function(result){});
+              }
+            });
+          }
         }
+        res.render('update',{id:req.params.id,path:'../',message:message});
+      }else{
+        res.json({"status":"success"});
       }
     });
-  res.render('update',{id:req.params.id,path:'../',message:message});
+  
 });
 
 
@@ -147,14 +152,10 @@ router.delete('/product', controllers.Product.deleteProduct);
 router.post('/product/getAll', controllers.Product.getAllProducts);
 router.post('/product/getById', controllers.Product.getProductById);
 router.get('/product/getByUserId/:id', controllers.Product.getProductByUserId);
-// <<<<<<< HEAD
 router.get('/product/getByName/:name', controllers.Product.getProductByName);
 router.get('/product/getByName', controllers.Product.getProductByName);
 router.post('/product/searchProduct', controllers.Product.searchAllProductsByNameQuery);
-// =======
 router.get('/product/orders/:id', controllers.Product.getProductOrders);
-router.get('/product/getByName', controllers.Product.getProductByName);
-// >>>>>>> 95297b0326b89848d9d11e233a60df088797359d
 router.post('/product/add', controllers.Product.addProduct);
 // router.post('/product/getProductBought', controllers.Product.getProductBought);
 router.post('/product/changeProductStatus', controllers.Product.changeProductStatus);

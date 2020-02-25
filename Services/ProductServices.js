@@ -2,6 +2,7 @@ var models = require("../Model/model_index");
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 var Image=require("../model/ImageModel")
+var Order=require("../model/OrderModel")
 
 module.exports.getAllProductsQuery = function (callback) {
 	models.Product.findAll({

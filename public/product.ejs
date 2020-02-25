@@ -149,7 +149,8 @@
 var user=JSON.parse(localStorage.getItem("user"));
 let user_id=0;
 
-$(".loader,.show_message,.review_form_,.reviewBox").hide();
+
+$(".loader,.show_message,.review_form_,.reviewBox,.oldchat").hide();
 if(user !== null){
   document.getElementById('name').value = user.name;
   document.getElementById('email').value = user.email;
@@ -175,6 +176,8 @@ console.log(user_id);
         };
 
   $.ajax(settings).done(function (response) {
+  console.log('-->');
+  console.log(response);
   similaritems(response.rows[0].name);
     receiver_id=response.rows[0].user_id;
         document.getElementById('pname').innerHTML = response.rows[0].name;
@@ -182,25 +185,9 @@ console.log(user_id);
         document.getElementById('description').innerHTML = response.rows[0].description;
 
         getReviews();
+        getMessages();
 
-        if(response.messages.length==0){
-          $(".oldchat").hide();
-          $(".show_message").hide();
-        }else{
-          $(".contact_form").hide();
-          let chatHistory="";
-          for (var i = 0; i < response.messages.length; i++) {
-            let color='background:#2f7dfc;color:#fff;';
-            let float='';
-            console.log(response.messages[i].sender_id+"==="+user.id);
-            if(response.messages[i].sender_id==user.id){
-              color='background:#cccccc;';
-              float='text-align:right;';
-            }
-            chatHistory+=`<div style="width:95%;`+color+`;`+float+`border:1px solid #ccc;padding:5px 15px;margin:5px;border-radius:10px;">`+response.messages[i].message+`<br/><small>`+response.messages[i].timestamp+`</small></div>`;
-          }
-          $(".chat").html(chatHistory);
-        }
+        
 
         let htmlData = "";
 
@@ -369,6 +356,8 @@ console.log(user_id);
         $.ajax(settings).done(function (response) {
             if(response.rows.length==0){
               $(".oldchat").hide();
+              $(".oldchat").hide();
+              $(".show_message").hide();
             }else{
               $(".contact_form").hide();
               let chatHistory="";

@@ -66,11 +66,15 @@ exports.getProductByName = (req, res, next) =>{
 			  services.Product.getImages(id,(rows) => {
 				let images=rows;
 					  services.Message.getAllMessagesQuery(id,req.body.user_id,(rows) => {
-						res.json({
-							images:images,
-							rows:product,
-							messages:rows
-						  })
+						let msg=rows;
+							services.Order.getOrdersByIdQuery(req.body.user_id,id,(rows) => {
+								res.json({
+									images:images,
+									rows:product,
+									msg:msg,
+									order:rows
+								  })
+							  })
 					  })
 			  })
 	  })
