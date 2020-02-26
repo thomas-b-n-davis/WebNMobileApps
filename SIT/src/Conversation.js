@@ -36,7 +36,8 @@ export default class HomeScreen extends React.Component {
        message:'',
        pid:0,
        uid:0,
-       receiver_id:0
+       receiver_id:0,
+       order:false
 		}
 	}
 
@@ -73,7 +74,40 @@ export default class HomeScreen extends React.Component {
 	    .finally(function () { 
         self.setState({loadingmenu:false});
       });
+
+      axios.post(url+'/orders/getAllOrderById/',{
+              user_id:user.id,
+              product_id:current.id
+      })
+      .then(function (response) {
+          // handle success  
+          console.log(response.data.rows.length);
+          if(response.data.rows.length===0){
+              self.setState({order:true});
+          }
+      })
+      .catch(function (error) { console.log(error);})
+      .finally(function () { 
+      });
 	
+  }
+
+  ordrItem = async() =>{
+    let self=this;
+    let url = await AsyncStorage.getItem('url');
+      axios.post(url+'/orders/addOrder/',{
+              user_id:self.state.uid,
+              product_id:self.state.pid,
+              receiver_id:self.state.receiver_id
+            })
+      .then(function (response) {
+          // handle success  
+          this.props.navigation.navigate("Conversation")
+      })
+      .catch(function (error) { console.log(error);})
+      .finally(function () { 
+        self.setState({loadingmenu:false});
+      });
   }
 
 
@@ -162,10 +196,12 @@ export default class HomeScreen extends React.Component {
       loading1=<ActivityIndicator size="large" color="#EC407A" style={{width: '100%',alignItems:'center',marginTop:5}}/>;
     }else{
       loading1=<TextInput
-                      placeholder='Enter something and enter to search'
+                      placeholder='Enter something and enter to send'
                           placeholderTextColor='#AFAFAF'
                       style={{flex:0,borderColor: '#ededed',paddingHorizontal:10,
-                borderBottomWidth: 1,marginHorizontal:2,borderWidth:1,borderColor:'#999',marginVertical:10,borderRadius:30}}
+                      marginBottom:Platform.OS === "ios"?40:0,
+                      height:42,
+                    borderBottomWidth: 1,marginHorizontal:2,borderWidth:1,borderColor:'#999',marginVertical:10,borderRadius:30}}
                       onChangeText={ TextInputValue =>
                               this.setState({message : TextInputValue }) }
                         value={this.state.message}
@@ -174,6 +210,16 @@ export default class HomeScreen extends React.Component {
                       />
                        ;
     }
+
+    let orderbtn;
+    if(this.state.order===true){
+      orderbtn=<TouchableOpacity style={{marginTop:20,marginRight:5,color:'#EC407A',padding:5,height:32,backgroundColor:'#ffffff',borderRadius:43}} onPress={()=>this.ordrItem()}>
+        <Text style={{fontSize:11,color:'#EC407A',fontWeight:'bold',flex:1,marginTop:5}}>Sell to user</Text>
+      </TouchableOpacity>;
+    }else{
+        orderbtn=<Text></Text>;
+    }
+
 		return (	
 			<>
 				<View style={styles.body}>
@@ -188,14 +234,8 @@ export default class HomeScreen extends React.Component {
                         resizeMode="contain"
                   />
                   </TouchableOpacity>
-                  <Text style={{fontWeight:'bold',fontSize:29,color:'#ffffff',marginTop:15,flex:1}}>Conversation</Text>
-                  <TouchableOpacity style={{marginTop:10}} onPress={()=>this.loadData()}>
-                <Image
-                        style={{width:14,margin:10}}
-                        source={require('./res/refresh.png')}
-                        resizeMode="contain"
-                  />
-                  </TouchableOpacity>
+                  <Text style={{fontWeight:'bold',fontSize:19,color:'#ffffff',marginTop:15,flex:1}}>Conversation</Text>
+                  {orderbtn}
               </View>
         </LinearGradient>
 		          

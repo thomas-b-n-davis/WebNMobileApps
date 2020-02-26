@@ -72,15 +72,15 @@
 
                 let imgData='';
                 for(let img=0;img<innerData.image.length;img++){
-                    if(typeof innerData.image[img].path !== 'undefined'){console.log(innerData.image[img].path);
-                            imgData+=`<div class="col-md-3" ><img src="`+innerData.image[img].path+`" width="100%" onclick="largeimg('`+innerData.image[img].path+`')"/></div>`;
+                    if(typeof innerData.image[img].path !== 'undefined'){
+                            imgData+=`<div class="col-md-3" ><img src="`+innerData.image[img].path+`" width="100%" onclick="largeimg('`+data+`','`+innerData.image[img].path+`')"/></div>`;
                     }
                 }
 
                 htmlData=htmlData+"<div class=\"row\" style=\"padding:10px 0px;border:1px solid #ededed;\">";
                 htmlData=htmlData+"<div class=\"col-md-4\"><div class=\"category_product_text\"><h3>"+innerData.name+"</h3><br/><h2>$"+innerData.price+"</h2><br/>"+innerData.description+"</div></div>";
 
-                htmlData=htmlData+"<div class=\"col-md-5 \"><div class=\"category_product_text largeImg\"><img src='"+img+"'/></div><div class=\"imagess row\">"+imgData+"</div></div>";
+                htmlData=htmlData+"<div class=\"col-md-5 \"><div class=\"category_product_text largeImg"+data+"\"><img src='"+img+"'/></div><div class=\"imagess row\">"+imgData+"</div></div>";
 
                 htmlData=htmlData+"<div class=\"col-md-2\"><a href=\"/product/"+innerData.id+"\" class=\"gridLink\" >View</a>";
 
@@ -104,8 +104,8 @@
             $(".grid").html(htmlData);
         });
 
-        function largeimg(img){
-            $(".largeImg").html("<img src='"+img+"'/>");
+        function largeimg(id,img){
+            $(".largeImg"+id).html("<img src='"+img+"'/>");
         }
 
         function UpdateStatus(id){

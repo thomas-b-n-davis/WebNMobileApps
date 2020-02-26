@@ -267,7 +267,7 @@ export default class HomeScreen extends React.Component {
       loading=<ActivityIndicator size="large" color="#E3685C" style={{width: '100%',alignItems:'center',marginTop:100}}/>;
     }else{
       loading=<FlatList
-      keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => index.toString()}
         data={this.state.data}
         renderItem={this.renderItem}
       />;

@@ -35,6 +35,7 @@ app.use('/', index);
 var publicDir = require('path').join(__dirname,'/public');
 app.use(express.static(publicDir));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/SIT', express.static(path.join(__dirname, 'SIT')));
 app.use(partials());
 
 
